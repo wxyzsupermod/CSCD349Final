@@ -1,113 +1,53 @@
-import java.util.Scanner;
+
 
 public class Dungeon
 {
-	private static Scanner Keyboard = new Scanner(System.in);
-    public static void main(String[] args)
-	{
-		Hero theHero;
-		Monster theMonster;
-
-		do
-		{
-		    theHero = chooseHero();
-		    theMonster = generateMonster();
-			battle(theHero, theMonster);
-
-		} while (playAgain());
-
-    }//end main method
-
-
-	public static Hero chooseHero()
-	{
-		int choice;
-		HeroFactory factory = new HeroFactory();
-
-		System.out.println("Choose a hero:\n" +
-					       "1. Warrior\n" +
-						   "2. Sorceress\n" +
-						   "3. Thief");
-		choice = Keyboard.nextInt();
-
-		if(choice == 1) {
-			return factory.createHero(1);
+	private Room[][] rooms; // Row-major indexing. So the room at (5, 3) is indexed with rooms[5][3], which coincides with the assignment specification.
+	private final int roomsWidth, roomsHeight;
+	
+	private Entrance entrance;
+	private Exit exit;
+	
+	public Dungeon(int roomsWidth, int roomsHeight) {
+		if (roomsWidth * roomsHeight < 4) {
+			throw new IllegalArgumentException("There must be at least 4 rooms in the dungeon.");
 		}
-		
-		else if(choice == 2) {
-			return factory.createHero(2);
+		this.roomsWidth = roomsWidth;
+		this.roomsHeight = roomsHeight;
+		reset();
+	}
+	
+	private void reset() { // Clear the state of the game, 
+		generateRooms();
+		generateEntranceAndExit();
+	}
+	
+	private void generateRooms() {
+		rooms = new Room[roomsHeight][];
+		for (int i = 0; i < roomsHeight; i ++) {
+			rooms[i] = new Room[roomsWidth];
+			for (int j = 0; j < roomsWidth; j ++) {
+				rooms[i][j] = new Room();
+			}
 		}
-		
-		else {
-			return factory.createHero(3);
+	}
+
+	private void generateEntranceAndExit() {
+		entrance = new Entrance();
+		exit = new Exit();
+	}
+	
+	public boolean locationIsValid(int i, int j) {
+		return i >= 0 && j >= 0 && i < roomsHeight && j < roomsWidth;
+	}
+	
+	public Room getRoom(int i, int j) {
+		if (!locationIsValid(i, j)) {
+			throw new IllegalArgumentException("The provided location (" + i + ", " + j + ") is invalid.");
 		}
-
-	}//end chooseHero method
-
-	public static Monster generateMonster()
-	{
-		int choice;
-		MonsterFactory factory = new MonsterFactory();
-
-		choice = (int)(Math.random() * 3) + 1;
-		
-		if(choice == 1) {
-			return factory.createMonster(1);
-		}
-		
-		else if(choice == 2) {
-			return factory.createMonster(2);
-		}
-		
-		else {
-			return factory.createMonster(3);
-		}
-
-	}//end generateMonster method
-
-
-	public static boolean playAgain()
-	{
-		char again;
-
-		System.out.println("Play again (y/n)?");
-		again = Keyboard.next().charAt(0);
-
-		return (again == 'Y' || again == 'y');
-	}//end playAgain method
-
-
-	public static void battle(Hero theHero, Monster theMonster)
-	{
-		char pause = 'p';
-		System.out.println(theHero.getName() + " battles " +
-							theMonster.getName());
-		System.out.println("---------------------------------------------");
-
-		//do battle
-		while (theHero.isAlive() && theMonster.isAlive() && pause != 'q')
-		{
-		    //hero goes first
-			theHero.battleChoices(theMonster);
-
-			//monster's turn (provided it's still alive!)
-			if (theMonster.isAlive())
-			    theMonster.attack(theHero);
-
-			//let the player bail out if desired
-			System.out.print("\n-->q to quit, anything else to continue: ");
-			pause = Keyboard.next().charAt(0);
-
-		}//end battle loop
-
-		if (!theMonster.isAlive())
-		    System.out.println(theHero.getName() + " was victorious!");
-		else if (!theHero.isAlive())
-			System.out.println(theHero.getName() + " was defeated :-(");
-		else//both are alive so user quit the game
-			System.out.println("Quitters never win ;-)");
-
-	}//end battle method
-
-
-}//end Dungeon class
+		return rooms[i][j];
+	}
+	
+	
+	
+}
