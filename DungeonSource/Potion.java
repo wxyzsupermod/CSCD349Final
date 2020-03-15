@@ -1,10 +1,6 @@
 
-public abstract class Potion {
+public abstract class Potion extends DungeonEntity {
 	
-	public Potion() {
-		
-	}
-	
-	public abstract void doEffect(DungeonCharacter c);
+	public abstract void affectCharacter(DungeonCharacter c);
 	
 }

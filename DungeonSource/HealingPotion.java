@@ -16,7 +16,7 @@ public class HealingPotion extends Potion {
 	}
 	
 	@Override
-	public void doEffect(DungeonCharacter c) {
+	public void affectCharacter(DungeonCharacter c) {
 		c.addHitPoints(healPoints);
 	}
 }
