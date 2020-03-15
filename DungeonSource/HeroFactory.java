@@ -14,6 +14,16 @@ public class HeroFactory {
 		else if(choice == 3) {
 			return new Warrior();
 		}
+		else if(choice == 4) {
+			return new ElfWizard();
+		}
+		else if( choice == 5) {
+			return new Gandalf();
+			
+		}
+		else if( choice == 6) {
+			return new Sorcerer();
+		}
 		
 		else {
 			return null;
