@@ -1,17 +1,10 @@
 import java.util.Random;
 
-public class Pit {
+public class Pit extends DungeonEntity{
 	private int damageDone;
 	
 	public Pit() {
-		this.setDamageDone(new Random().nextInt(20 - 1 + 1));
-	}
-
-	public int getDamageDone() {
-		return damageDone;
-	}
-
-	public void setDamageDone(int damageDone) {
-		this.damageDone = damageDone;
+		this.setChangeInHealth(new Random().nextInt(25 - 10) + 1);
+      this.setName("Pit");
 	}
 }
