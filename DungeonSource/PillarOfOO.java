@@ -1,5 +1,5 @@
 import java.util.Random;
-public class PillarOfOO {
+public class PillarOfOO extends DungeonEntity {
 	private String pillarOfOO;
 	
 	public PillarOfOO() {

@@ -1,5 +1,5 @@
 
-public abstract class DungeonCharacter
+public abstract class DungeonCharacter extends DungeonEntity
 {
 
 	private String name;
