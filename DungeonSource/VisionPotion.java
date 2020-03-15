@@ -7,7 +7,7 @@ public class VisionPotion extends Potion {
 	
 	@Override
 	public void doEffect(DungeonCharacter c) {
-		System.out.println ("Character " + c.getName() + " received Potion vision effect.");
+		System.out.println ("Character " + c.getName() + " received vision potion effect.");
 		// do the potion things here
 	}
 	
