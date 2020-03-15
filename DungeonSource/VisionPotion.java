@@ -8,10 +8,15 @@ public class VisionPotion extends Potion{
 		for(int x = 0; x < rooms.length; x++) {
 			for(int y = 0; y < rooms.length; y++) {
 				if(Math.abs(posX - x) <= 1 && Math.abs(posY - y) <= 1) {
-					System.out.print(rooms[x][y].toString());
+					if(x == posX && y == posY) {
+						System.out.printf("%-5s", " @ ");
+					}
+					else {
+						System.out.printf("%-5s", rooms[x][y].toString());
+					}
 				}
 				else {
-					System.out.print("*" + " ");
+					System.out.printf("%-5s", " * ");
 				}
 			}
 			System.out.println();
