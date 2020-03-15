@@ -3,11 +3,18 @@ import java.util.Random;
 public class MYTESTERDELETELATER {
 
 	public static void main(String[] args) {
-		
-		Room room = new Room();
-		
-		System.out.println(room);
-		
-	}
-
+   
+      Room[][] rooms = new Room[5][5];
+      
+      for(int i =0; i < rooms.length; i++){
+         System.out.println();  
+         System.out.print("*");   
+         for(int j = 0; j < rooms.length; j++){
+            rooms[i][j] = new Room();
+            
+            System.out.print(rooms[i][j] + " ");
+         }
+         System.out.print("*");
+      }
+   }
 }
