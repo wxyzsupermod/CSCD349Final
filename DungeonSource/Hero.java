@@ -44,8 +44,9 @@ public abstract class Hero extends DungeonCharacter
 		}
 		else {
 			System.out.println("Cannot Move in that direction");
-			return null;
+			
 		}
+		return null;
 		
 	}
 	
