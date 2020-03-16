@@ -46,7 +46,7 @@ public abstract class Hero extends DungeonCharacter
 			System.out.println("Cannot Move in that direction");
 			
 		}
-		return null;
+		return d.getRoom(posX, posY);
 		
 	}
 	
