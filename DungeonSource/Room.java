@@ -94,6 +94,46 @@ public class Room {
       return containingObject;
 		
 	}
+
+	public Monster getMonster() {
+		return monster;
+	}
+
+	public void setMonster(Monster monster) {
+		this.monster = monster;
+	}
+
+	public DungeonEntity getPit() {
+		return pit;
+	}
+
+	public void setPit(DungeonEntity pit) {
+		this.pit = pit;
+	}
+
+	public DungeonEntity getHealingPotion() {
+		return healingPotion;
+	}
+
+	public void setHealingPotion(DungeonEntity healingPotion) {
+		this.healingPotion = healingPotion;
+	}
+
+	public DungeonEntity getVisionPotion() {
+		return visionPotion;
+	}
+
+	public void setVisionPotion(DungeonEntity visionPotion) {
+		this.visionPotion = visionPotion;
+	}
+
+	public DungeonEntity getPillarOfOO() {
+		return pillarOfOO;
+	}
+
+	public void setPillarOfOO(DungeonEntity pillarOfOO) {
+		this.pillarOfOO = pillarOfOO;
+	}
 	
 	
 }
