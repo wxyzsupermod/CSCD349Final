@@ -11,7 +11,7 @@ public abstract class Hero extends DungeonCharacter
 	private int visionPotions;
 	private int healingPotions;
 
-	public void movePlayer(int y, int x, Dungeon d) {
+	public Room movePlayer(int y, int x, Dungeon d) {
 		
 		if(d.locationIsValid(x, y)) {
 			posX = x;
@@ -20,26 +20,31 @@ public abstract class Hero extends DungeonCharacter
 			if(d.getRoom(x, y).getHealingPotion() != null) {
 				this.healingPotions = this.healingPotions + 1;
 				d.getRoom(x, y).setHealingPotion(null);
+				return d.getRoom(x, y);
 			}
 			if(d.getRoom(x, y).getPillarOfOO() != null) {
 				this.pillars = this.pillars + 1;
 				d.getRoom(x, y).setPillarOfOO(null);
+				return d.getRoom(x, y);
 			}
 			if(d.getRoom(x, y).getVisionPotion() != null) {
 				this.visionPotions = this.visionPotions + 1;
 				d.getRoom(x, y).setVisionPotion(null);
+				return d.getRoom(x, y);
 			}
 			if(d.getRoom(x, y).getMonster() != null) {
 				//Do Battle
-				
+				return d.getRoom(x, y);
 			}
 			if(d.getRoom(x, y).getPit() != null) {
 				System.out.println(this.getName() + " Fell in a pit and took five damage");
 				this.subtractHitPoints(5);
+				return d.getRoom(x, y);
 			}
 		}
 		else {
 			System.out.println("Cannot Move in that direction");
+			return null;
 		}
 		
 	}
