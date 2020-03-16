@@ -5,6 +5,11 @@ public abstract class Hero extends DungeonCharacter
 	private double chanceToBlock;
 	private int numTurns;
 	private static Scanner Keyboard = new Scanner(System.in);
+	private int posX;
+	private int posY;
+	private int pillars;
+	private int visionPotions;
+	private int healingPotions;
 
 public double getChanceToBlock() {
 	return chanceToBlock;
