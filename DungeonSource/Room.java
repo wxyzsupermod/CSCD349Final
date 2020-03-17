@@ -3,8 +3,8 @@ import java.util.Random;
 public class Room {
 	private HealingPotion healingPotion;
 	private Pit pit;
-	private Entrance entrance;
-	private Exit exit;
+	private boolean isEntrance;
+	private boolean isExit;
 	private Monster monster;
 	private PillarOfOO pillar;
 	private VisionPotion visionPotion;
@@ -17,41 +17,28 @@ public class Room {
 		this.x = x;
 		this.y = y;
 		
+		isEntrance = false;
+		isExit = false;
+		
 	}
 	
 	public void fill() {
-		// TODO: 10% chance, independent
-		if (entrance != null || exit != null) {
+		if (isEntrance || isExit) {
 			return;
 		}
-		int num = new Random().nextInt(4);
-		if(num == 0) {
+		Random rand = new Random();
+		if(rand.nextDouble() < 0.1d) {
 			this.healingPotion = new HealingPotion();
 		}
-		
-		else if(num == 1) {
+		if(rand.nextDouble() < 0.1d) {
+			this.visionPotion = new VisionPotion();
+		}
+		if(rand.nextDouble() < 0.1d) {
 			this.pit = new Pit();
 		}
-		
-		else if(num == 2){
-			int MonsterNum = new Random().nextInt(4);
-			
+		if(rand.nextDouble() < 0.1d){
 			MonsterFactory factory = new MonsterFactory();
-			this.monster = factory.createMonster(MonsterNum);
-		}
-		
-		else {
-			int multipleItems = new Random().nextInt(2);
-			
-			if(multipleItems == 0) {
-				this.healingPotion = new HealingPotion();
-				this.pit = new Pit();
-			}
-			
-			else if(multipleItems == 1) {
-				this.visionPotion = new VisionPotion();
-				
-			}
+			this.monster = factory.createMonster(rand.nextInt(4));
 		}
 	}
 	
@@ -82,15 +69,15 @@ public class Room {
 	
 	
 	public String getContainingObject() {
-		if(this.entrance != null) {
+		if(this.isEntrance) {
 			return "I";
 		}
 		
-		else if(this.exit != null) {
+		else if(this.isExit) {
 			return "O";
 		}
 		
-		else if(hasMixedItems()) {
+		else if(this.hasMixedItems()) {
 			return "M";
 		}
 		
@@ -149,21 +136,22 @@ public class Room {
 	public void setVisionPotion(VisionPotion visionPotion) {
 		this.visionPotion = visionPotion;
 	}
-	public Entrance getEntrance() {
-		return entrance;
+	public boolean getEntrance() {
+		return isEntrance;
 	}
 
-	public void setEntrance(Entrance entrance) {
-		this.entrance = entrance;
+	public void setEntrance(boolean e) {
+		this.isEntrance = e;
 	}
 
-	public Exit getExit() {
-		return exit;
+	public boolean getExit() {
+		return isExit;
 	}
 
-	public void setExit(Exit exit) {
-		this.exit = exit;
+	public void setExit(boolean e) {
+		this.isExit = e;
 	}
+	
 	public Pit getPit() {
 		return pit;
 	}

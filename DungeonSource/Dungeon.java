@@ -1,44 +1,42 @@
-
+import java.util.Random;
 
 public class Dungeon
 {
 	private Room[][] rooms; // Row-major indexing. So the room at (5, 3) is indexed with rooms[5][3], which coincides with the assignment specification.
 	public final int roomsWidth, roomsHeight;
 	
-	private Entrance entrance;
-	private Exit exit;
+	private Room entrance;
+	private Room exit;
 	
 	public Dungeon(int roomsWidth, int roomsHeight) {
-		if (roomsWidth * roomsHeight < 4) {
-			throw new IllegalArgumentException("There must be at least 4 rooms in the dungeon.");
+		if (roomsWidth * roomsHeight < 6) {
+			throw new IllegalArgumentException("There must be at least 6 rooms in the dungeon.");
 		}
 		this.roomsWidth = roomsWidth;
 		this.roomsHeight = roomsHeight;
 		reset();
 	}
 	
-	private void reset() { // Clear the state of the game, 
+	private void reset() {
 		generateRooms();
 	}
 	
 	private void generateRooms() {
 		RoomFactory factory = new RoomFactory();
-		entrance = new Entrance();
-		exit = new Exit();
+		Random rand = new Random();
 		rooms = new Room[roomsHeight][];
 		for (int i = 0; i < roomsHeight; i ++) {
 			rooms[i] = new Room[roomsWidth];
 			for (int j = 0; j < roomsWidth; j ++) {
 				rooms[i][j] = factory.createRoom(j, i);
-				if (i == 0 && j == 0) {
-					rooms[i][j].setEntrance (entrance);
-					//System.out.println("Add entrance");
-				} else if (i == 4 && j == 4) {
-					rooms[i][j].setExit (exit);
-					//System.out.println("Add exit");
-				}
 			}
 		}
+		int entranceX = rand.nextInt(roomsWidth);
+		int entranceY = rand.nextInt(roomsHeight);
+		entrance = rooms[entranceY][entranceX];
+		entrance.setEntrance(true);
+		exit = rooms[(entranceY+rand.nextInt(roomsHeight-1)+1)%roomsHeight][(entranceX+rand.nextInt(roomsWidth-1)+1)%roomsWidth];
+		exit.setExit(true);
 	}
 	
 	public boolean locationIsValid(int i, int j) {
@@ -56,4 +54,12 @@ public class Dungeon
 		return rooms;
 	}
 	
+	public Room getEntrance() {
+		return entrance;
+	}
+
+	public Room getExit() {
+		return exit;
+	}
+
 }

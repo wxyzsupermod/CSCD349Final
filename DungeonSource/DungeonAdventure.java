@@ -27,14 +27,13 @@ public class DungeonAdventure
 	private static Scanner Keyboard = new Scanner(System.in);
     private static Dungeon dungeon;
     private static Hero theHero;
-    private static int curX = 0;
-	private static int curY = 0;
+    private static Monster theMonster;
 	private static Room currentRoom;
+	
 	public static void main(String[] args)
 	{
-		Monster theMonster;
-		dungeon = new Dungeon(5, 5);
-		currentRoom = dungeon.getRoom(0, 0);
+		dungeon = new Dungeon(20, 10);
+		currentRoom = dungeon.getEntrance();
 		
 		do
 		{
