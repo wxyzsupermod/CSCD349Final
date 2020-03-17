@@ -7,12 +7,16 @@ public class Room {
 	private Exit exit;
 	private Monster monster;
 	private PillarOfOO pillar;
-	private Door door;
 	private VisionPotion visionPotion;
 	
+	private final int x, y;
 	
-	public Room() {
+	
+	public Room(int x, int y) {
 		int num = new Random().nextInt(6);
+		
+		this.x = x;
+		this.y = y;
 		
 		if(num == 0) {
 			this.healingPotion = new HealingPotion();
@@ -46,11 +50,79 @@ public class Room {
 			}
 			
 			else if(multipleItems == 1) {
-				this.door = new Door();
 				this.visionPotion = new VisionPotion();
 				
 			}
 		}
+	}
+	
+	
+	public void printTopRow() {
+		if (y == 0) {
+			System.out.print("* * *");
+		} else {
+			System.out.print("* - *");
+		}
+	}
+	
+	public void printMiddleRow() {
+		String left, right;
+		
+		if (x == 0) {
+			left = "*";
+		} else {
+			left = "|";
+		}
+		if (x == 4) {
+			right = "*";
+		} else {
+			right = "|";
+		}
+		System.out.print(left + " " + getContainingObject() + " " + right);
+	}
+	
+	public void printBottomRow() {
+		if (y == 4) {
+			System.out.print("* * *");
+		} else {
+			System.out.print("* - *");
+		}
+	}
+	
+	
+	
+	public String getContainingObject() {
+		if((this.healingPotion != null && this.pit != null) || (this.visionPotion != null)) {
+			return "M";
+		}
+		
+		else if(this.healingPotion != null) {
+			return "H";
+		}
+		
+		else if(this.pit != null) {
+			return "P";
+		}
+		
+		else if(this.entrance != null) {
+			return "I";
+		}
+		
+		else if(this.exit != null) {
+			return "O";
+		}
+		
+		else if(this.monster != null) {
+			return "X";
+		}
+		
+		else if(this.visionPotion != null) {
+			return "V";
+		}
+		else {
+			return "E";
+		}
+		
 	}
 	
 	public String toString() {
@@ -58,7 +130,7 @@ public class Room {
 		String roomDesignEW;
 		String roomDesignNS;
 		
-		if((this.healingPotion != null && this.pit != null) || (this.door != null && this.visionPotion != null)) {
+		if((this.healingPotion != null && this.pit != null) || (this.visionPotion != null)) {
 			containingObject = " M ";
 		}
 		
