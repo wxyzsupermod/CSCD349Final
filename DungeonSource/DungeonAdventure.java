@@ -34,6 +34,7 @@ public class DungeonAdventure
     	Scanner kb = new Scanner(System.in);
 		Monster theMonster;
 		dungeon = new Dungeon(5, 5);
+		
 		do
 		{//begin do
 			int option = displayMenu(kb);
@@ -45,7 +46,7 @@ public class DungeonAdventure
 				System.out.println("Would you like to move your player down or right? (d or r)");
 				char decision = kb.next().charAt(0);
 				Room currentRoom;
-				if(decision == 'd') {//begin if
+				if(decision == 'd') {
 					currentRoom = theHero.movePlayer(curX ++, curY, dungeon);
 				} else {
 					currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
@@ -76,12 +77,12 @@ public class DungeonAdventure
 					System.out.println("The current room is: " + theHero.getPosX() + " and " + theHero.getPosY());
 				}
 			} else {
-				printRoom();
+				printDungeon();
 			}
 		} while (theHero != null && theHero.isAlive());
 		
 		System.out.println("This is where we print the whole dungeon at the end");
-		printRoom();
+		printDungeon();
 	}
 
     private static int displayMenu(Scanner kb)
@@ -196,24 +197,54 @@ public class DungeonAdventure
 
 	}//end battle method
 	
-	public static void printRoom() {
-		Room[][] rooms = dungeon.getRooms();
-	      
-	      for(int i =0; i < rooms.length; i++){
-	         
-	         for(int j = 0; j < rooms[i].length; j++){         
-		            rooms[i][j].printTopRow();
-		         }
-	         System.out.println("*");
-	         for(int j = 0; j < rooms[i].length; j++){         
-		            rooms[i][j].printMiddleRow();
-		         }
-	         System.out.println("*");
-	         for(int j = 0; j < rooms[i].length; j++){         
-		            rooms[i][j].printBottomRow();
-		         }
-	      }
-	      System.out.println("*");
+	public static void printDungeon() {
+		printRooms(0, 0, dungeon.roomsWidth, dungeon.roomsHeight);
+	}
+	
+	public static void printRooms(int startX, int startY, int endX, int endY) {
+		startX = Math.min(Math.max(startX, 0), dungeon.roomsWidth - 1);
+		startY = Math.min(Math.max(startY, 0), dungeon.roomsHeight - 1);
+		endX = Math.min(Math.max(endX, 0), dungeon.roomsWidth - 1);
+		endY = Math.min(Math.max(endY, 0), dungeon.roomsHeight - 1);
+		if (startX > endX) {
+			int t = startX;
+			startX = endX;
+			endX = t;
+		}
+		if (startY > endY) {
+			int t = startY;
+			startY = endY;
+			endY = t;
+		}
+		for(int i = startY; i <= endY; i++){
+			for(int j = startX; j <= endX; j++){
+				dungeon.getRoom(i, j).printTopRow();
+			}
+			System.out.println("*");
+			for(int j = startX; j <= endX; j++){
+				dungeon.getRoom(i, j).printMiddleRow();
+			}
+			if (endX == dungeon.roomsWidth - 1) {
+				System.out.println("*");
+			} else {
+				System.out.println("|");
+			}
+		}
+		if (endY == dungeon.roomsHeight - 1) {
+			for (int j = startX; j <= endX; j ++) {
+				System.out.print("* * ");
+			}
+		} else {
+			for (int j = startX; j <= endX; j ++) {
+				System.out.print("* - ");
+			}
+		}
+		System.out.println("*");
 	}
 
-}//end DungeonAdventure class
+	
+	public static Dungeon getDungeon () {
+		return dungeon;
+	}
+	
+}

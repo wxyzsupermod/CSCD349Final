@@ -75,12 +75,10 @@ public class Room {
 		System.out.print(left + " " + getContainingObject() + " ");
 	}
 	
-	public void printBottomRow() {
-		if (y == 4) {
-			System.out.print("* * ");
-		}
+	@Override
+	public String toString() {
+		return "* " + (y == 0 ? "*" : "-") + " *\n" + (x == 0 ? "*" : "|") + " " + getContainingObject() + " " + (x == DungeonAdventure.getDungeon().roomsWidth - 1 ? "*" : "|") + "\n* " + (y == DungeonAdventure.getDungeon().roomsHeight - 1 ? "*" : "-") + " *";
 	}
-	
 	
 	
 	public String getContainingObject() {

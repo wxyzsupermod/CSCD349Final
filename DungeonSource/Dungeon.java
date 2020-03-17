@@ -3,7 +3,7 @@
 public class Dungeon
 {
 	private Room[][] rooms; // Row-major indexing. So the room at (5, 3) is indexed with rooms[5][3], which coincides with the assignment specification.
-	private final int roomsWidth, roomsHeight;
+	public final int roomsWidth, roomsHeight;
 	
 	private Entrance entrance;
 	private Exit exit;
