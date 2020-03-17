@@ -48,6 +48,8 @@ public class Dungeon
 		return rooms[i][j];
 	}
 	
-	
+	public Room[][] getRooms() {
+		return rooms;
+	}
 	
 }
