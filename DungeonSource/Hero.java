@@ -158,5 +158,10 @@ public void subtractHitPoints(int hitPoints)
 		System.out.println("Number of turns this round is: " + numTurns);
 
 	}//end battleChoices
+	@Override
+	public String toString() {
+		return this.getName() + " has " + this.getHitPoints() + " Hit Points " + this.getHealingPotions() + " Healing Potions "
+				+ this.getVisionPotions() + " Vision Potions " + this.getPillars() + " Pillars Of OO ";
+	}
 
 }//end Hero class
