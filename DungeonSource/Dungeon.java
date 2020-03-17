@@ -19,22 +19,26 @@ public class Dungeon
 	
 	private void reset() { // Clear the state of the game, 
 		generateRooms();
-		generateEntranceAndExit();
 	}
 	
 	private void generateRooms() {
+		RoomFactory factory = new RoomFactory();
+		entrance = new Entrance();
+		exit = new Exit();
 		rooms = new Room[roomsHeight][];
 		for (int i = 0; i < roomsHeight; i ++) {
 			rooms[i] = new Room[roomsWidth];
 			for (int j = 0; j < roomsWidth; j ++) {
-				rooms[i][j] = new Room(j, i);
+				rooms[i][j] = factory.createRoom(j, i);
+				if (i == 0 && j == 0) {
+					rooms[i][j].setEntrance (entrance);
+					System.out.println("Add entrance");
+				} else if (i == 4 && j == 4) {
+					rooms[i][j].setExit (exit);
+					System.out.println("Add exit");
+				}
 			}
 		}
-	}
-
-	private void generateEntranceAndExit() {
-		entrance = new Entrance();
-		exit = new Exit();
 	}
 	
 	public boolean locationIsValid(int i, int j) {

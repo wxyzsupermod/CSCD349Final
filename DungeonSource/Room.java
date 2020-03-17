@@ -4,6 +4,22 @@ public class Room {
 	private HealingPotion healingPotion;
 	private Pit pit;
 	private Entrance entrance;
+	public Entrance getEntrance() {
+		return entrance;
+	}
+
+	public void setEntrance(Entrance entrance) {
+		this.entrance = entrance;
+	}
+
+	public Exit getExit() {
+		return exit;
+	}
+
+	public void setExit(Exit exit) {
+		this.exit = exit;
+	}
+
 	private Exit exit;
 	private Monster monster;
 	private PillarOfOO pillar;
@@ -13,11 +29,17 @@ public class Room {
 	
 	
 	public Room(int x, int y) {
-		int num = new Random().nextInt(6);
 		
 		this.x = x;
 		this.y = y;
 		
+	}
+	
+	public void fill() {
+		if (entrance != null || exit != null) {
+			return;
+		}
+		int num = new Random().nextInt(4);
 		if(num == 0) {
 			this.healingPotion = new HealingPotion();
 		}
@@ -26,15 +48,7 @@ public class Room {
 			this.pit = new Pit();
 		}
 		
-		else if(num == 2) {
-			this.entrance = new Entrance();
-		}
-		
-		else if(num == 3) {
-			this.exit = new Exit();
-		}
-		
-		else if(num == 4){
+		else if(num == 2){
 			int MonsterNum = new Random().nextInt(4);
 			
 			MonsterFactory factory = new MonsterFactory();
@@ -85,7 +99,15 @@ public class Room {
 	
 	
 	public String getContainingObject() {
-		if((this.healingPotion != null && this.pit != null) || (this.visionPotion != null)) {
+		if(this.entrance != null) {
+			return "I";
+		}
+		
+		else if(this.exit != null) {
+			return "O";
+		}
+		
+		else if(this.healingPotion != null || this.pit != null || this.visionPotion != null) {
 			return "M";
 		}
 		
@@ -95,14 +117,6 @@ public class Room {
 		
 		else if(this.pit != null) {
 			return "P";
-		}
-		
-		else if(this.entrance != null) {
-			return "I";
-		}
-		
-		else if(this.exit != null) {
-			return "O";
 		}
 		
 		else if(this.monster != null) {
