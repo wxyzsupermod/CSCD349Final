@@ -3,6 +3,11 @@
 public class Dungeon
 {
 	private Room[][] rooms; // Row-major indexing. So the room at (5, 3) is indexed with rooms[5][3], which coincides with the assignment specification.
+	
+	public void setRooms(Room[][] rooms) {
+		this.rooms = rooms;
+	}
+
 	private final int roomsWidth, roomsHeight;
 	
 	private Entrance entrance;
@@ -19,29 +24,30 @@ public class Dungeon
 	
 	private void reset() { // Clear the state of the game, 
 		generateRooms();
-		generateEntranceAndExit();
 	}
 	
 	private void generateRooms() {
+		RoomFactory factory = new RoomFactory();
+		entrance = new Entrance();
+		exit = new Exit();
 		rooms = new Room[roomsHeight][];
 		for (int i = 0; i < roomsHeight; i ++) {
 			rooms[i] = new Room[roomsWidth];
 			for (int j = 0; j < roomsWidth; j ++) {
-				rooms[i][j] = new Room();
+				rooms[i][j] = factory.createRoom(j, i);
+				if (i == 0 && j == 0) {
+					rooms[i][j].setEntrance (entrance);
+					//System.out.println("Add entrance");
+				} else if (i == 4 && j == 4) {
+					rooms[i][j].setExit (exit);
+					//System.out.println("Add exit");
+				}
 			}
 		}
-	}
-
-	private void generateEntranceAndExit() {
-		entrance = new Entrance();
-		exit = new Exit();
 	}
 	
 	public boolean locationIsValid(int i, int j) {
 		return i >= 0 && j >= 0 && i < roomsHeight && j < roomsWidth;
-	}
-	public Room[][] getRooms(){
-		return rooms;
 	}
 	
 	public Room getRoom(int i, int j) {
@@ -51,6 +57,8 @@ public class Dungeon
 		return rooms[i][j];
 	}
 	
-	
+	public Room[][] getRooms() {
+		return rooms;
+	}
 	
 }

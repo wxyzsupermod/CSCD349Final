@@ -3,11 +3,10 @@ public class VisionPotion extends Potion{
 	// Problem is that you are printing the things correctly but not actually printing the
 	// array correctly so try to print the array and check if the values are in the correct range to be shown
 	// then and only then can you print the room
-	@Override
+	public VisionPotion(){}
 	public void affectCharacter(DungeonCharacter c) {
 		
 	}
-	public VisionPotion(){}
 	public void printVisionPotion(Room[][] rooms, int posY, int posX) {
 		for(int x = 0; x < rooms.length; x++) {
 			for(int y = 0; y < rooms.length; y++) {

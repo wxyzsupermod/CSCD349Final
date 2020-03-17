@@ -1,6 +1,6 @@
 /*Melody Kinyon
  * Corbin Smith
- * Yousef 
+ * Yousef Baghlar
  * Jordan Fischer
  * GamePlay: The player is asked to name their hero
  * The player is placed at the entrance of the dungeon
@@ -29,13 +29,11 @@ public class DungeonAdventure
 	public static void main(String[] args)
 	{
     	Scanner kb = new Scanner(System.in);
-		Hero theHero;
+		Hero theHero = null;
 		Monster theMonster;
-		dungeon = new Dungeon(5,5);
+		char decision;
 		
-		//Room beginning = new Dungeon[0][0];
-		//System.out.println("Move your player or use a potion? (m or p)");
-		//String decision = kb.next();
+		
 		
 		//Place the hero into the room in the dungeon[0][0] containing [I]
 		//determine if the player wants to move or use a potion;
@@ -58,12 +56,68 @@ public class DungeonAdventure
 				theHero = chooseHero(option);
 				theMonster = generateMonster();
 				
-				battle(theHero, theMonster);
+				//battle(theHero, theMonster);
 			} 
 			else {
 				 printRoom();
 				}
-		} while (playAgain());
+			while(theHero.isAlive()) {
+				
+			
+			dungeon = new Dungeon(5, 5);
+			int curRow= 0;
+			int curColumn = 0;
+			theHero.movePlayer(curRow, curColumn, dungeon);
+			System.out.println("Would you like to move your player down or right?"
+					+ " (d or r)");
+			decision = kb.next().charAt(0);
+			
+			if(decision == 'd') {
+				theHero.movePlayer(curRow, curColumn +1, dungeon);
+				System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
+				curColumn ++; 
+			}
+			else if( decision == 'r') {
+				theHero.movePlayer(curRow +1, curColumn, dungeon);
+				System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
+				 curRow++;
+			}
+			if(theHero.getHealingPotions()!=0) {
+				
+			
+			System.out.println("Use a potion or move? (p or m)");
+			decision = kb.next().charAt(0);
+			if(decision == 'p') {
+				//use potion
+				//printVisionPotion(dungeon, curRow, curColumn);
+			}
+			else if(decision == 'm') {
+				System.out.println("Move left, right, up or down?(l,r,u,d)");
+				decision = kb.next().charAt(0);
+				if(decision == 'l') {
+					theHero.movePlayer(curRow -1, curColumn, dungeon);
+					System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
+					 
+				}
+				else if( decision == 'r') {
+					theHero.movePlayer(curRow +1, curColumn, dungeon);
+					System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
+					 
+				}
+				else if( decision == 'u') {
+					theHero.movePlayer(curRow, curColumn-1, dungeon);
+					System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
+					 
+				}
+				else if(decision == 'd') {
+					theHero.movePlayer(curRow, curColumn +1, dungeon);
+					System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
+					 
+				}
+			}
+		}
+	}
+	} while (playAgain());
 		
 		System.out.println("This is where we print the whole dungeon at the end");
 		printRoom();
@@ -184,20 +238,21 @@ public class DungeonAdventure
 	public static void printRoom() {
 		Room[][] rooms = dungeon.getRooms();
 	      
-	      System.out.print("**********************");
 	      for(int i =0; i < rooms.length; i++){
-	         System.out.println();  
-	         System.out.print("*");   
 	         
-	         for(int j = 0; j < rooms.length; j++){         
-	            rooms[i][j] = new Room();
-	            System.out.print(rooms[i][j] + " ");
-	            System.out.print("|");
-	         }
-	         System.out.print("*");
+	         for(int j = 0; j < rooms[i].length; j++){         
+		            rooms[i][j].printTopRow();
+		         }
+	         System.out.println("*");
+	         for(int j = 0; j < rooms[i].length; j++){         
+		            rooms[i][j].printMiddleRow();
+		         }
+	         System.out.println("*");
+	         for(int j = 0; j < rooms[i].length; j++){         
+		            rooms[i][j].printBottomRow();
+		         }
 	      }
-	      System.out.println();
-	      System.out.println("**********************");
+	      System.out.println("*");
 	}
 
 }//end DungeonAdventure class

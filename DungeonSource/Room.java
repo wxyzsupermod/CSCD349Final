@@ -1,66 +1,29 @@
 import java.util.Random;
 
 public class Room {
-	private DungeonEntity pit;
-	private DungeonEntity door;
-	private DungeonEntity healingPotion;
+	private HealingPotion healingPotion;
+	private Pit pit;
+	private Entrance entrance;
+	private Exit exit;
 	private Monster monster;
-   
-	public Monster getMonster() {
-		return monster;
-	}
-
-	public void setMonster(Monster monster) {
-		this.monster = monster;
-	}
-
-	public DungeonEntity getPit() {
-		return pit;
-	}
-
-	public void setPit(DungeonEntity pit) {
-		this.pit = pit;
-	}
-
-	public DungeonEntity getDoor() {
-		return door;
-	}
-
-	public void setDoor(DungeonEntity door) {
-		this.door = door;
-	}
-
-
-   public DungeonEntity getHealingPotion() {
-	return healingPotion;
-}
-
-public void setHealingPotion(DungeonEntity healingPotion) {
-	this.healingPotion = healingPotion;
-}
-
-public DungeonEntity getVisionPotion() {
-	return visionPotion;
-}
-
-public void setVisionPotion(DungeonEntity visionPotion) {
-	this.visionPotion = visionPotion;
-}
-
-public DungeonEntity getPillarOfOO() {
-	return pillarOfOO;
-}
-
-public void setPillarOfOO(DungeonEntity pillarOfOO) {
-	this.pillarOfOO = pillarOfOO;
-}
-
-private DungeonEntity visionPotion;
-   private DungeonEntity pillarOfOO;
-   
-	public Room() {
-		int num = new Random().nextInt(6);
+	private PillarOfOO pillar;
+	private VisionPotion visionPotion;
+	
+	private final int x, y;
+	
+	
+	public Room(int x, int y) {
 		
+		this.x = x;
+		this.y = y;
+		
+	}
+	
+	public void fill() {
+		if (entrance != null || exit != null) {
+			return;
+		}
+		int num = new Random().nextInt(4);
 		if(num == 0) {
 			this.healingPotion = new HealingPotion();
 		}
@@ -75,14 +38,6 @@ private DungeonEntity visionPotion;
 			MonsterFactory factory = new MonsterFactory();
 			this.monster = factory.createMonster(MonsterNum);
 		}
-      
-      else if(num == 3){
-         this.pillarOfOO = new PillarOfOO();
-      }
-      
-      else if(num == 4){
-         this.visionPotion = new VisionPotion();
-      }
 		
 		else {
 			int multipleItems = new Random().nextInt(2);
@@ -93,56 +48,129 @@ private DungeonEntity visionPotion;
 			}
 			
 			else if(multipleItems == 1) {
-				this.door = new Door();
 				this.visionPotion = new VisionPotion();
 				
 			}
 		}
 	}
 	
-	public String toString() {
-		String containingObject = "";
-		String roomDesignEW;
-		String roomDesignNS;
-		
-		if((this.healingPotion != null && this.pit != null) 
-         || (this.door != null && this.visionPotion != null)) {
-			containingObject = " M ";
+	
+	public void printTopRow() {
+		if (y == 0) {
+			System.out.print("* * ");
+		} else {
+			System.out.print("* - ");
 		}
+	}
+	
+	public void printMiddleRow() {
+		String left;
 		
-		else if(this.healingPotion != null) {
-			containingObject =  " H ";
+		if (x == 0) {
+			left = "*";
+		} else {
+			left = "|";
 		}
-		
-		else if(this.pit != null) {
-			containingObject =  " P ";
+		System.out.print(left + " " + getContainingObject() + " ");
+	}
+	
+	public void printBottomRow() {
+		if (y == 4) {
+			System.out.print("* * ");
 		}
-		
-		else if(this.monster != null) {
-			containingObject =  " X ";
-		}
-		
-		else if(this.visionPotion != null) {
-			containingObject = " V ";
-		}
-      
-      else if(this.pillarOfOO != null){
-         containingObject = " ||";
-      }	
-		
-		else {
-			containingObject =  " E ";
-		}
-		
-		roomDesignNS = "\n" + " ***" + "\n";
-		roomDesignEW = "|" + containingObject + "|";
-		
-		//return roomDesignNS + roomDesignEW + roomDesignNS;
-      
-      
-      return containingObject;
-		
 	}
 	
 	
+	
+	public String getContainingObject() {
+		if(this.entrance != null) {
+			return "I";
+		}
+		
+		else if(this.exit != null) {
+			return "O";
+		}
+		
+		else if(hasMixedItems()) {
+			return "M";
+		}
+		
+		else if(this.healingPotion != null) {
+			return "H";
+		}
+		
+		else if(this.pit != null) {
+			return "P";
+		}
+		
+		else if(this.monster != null) {
+			return "X";
+		}
+		
+		else if(this.visionPotion != null) {
+			return "V";
+		}
+		else {
+			return "E";
+		}
+		
+	}
+	
+	public boolean hasMixedItems() {
+		return (this.healingPotion != null && this.pit != null) || (this.visionPotion != null);
+	}	
+	public HealingPotion getHealingPotion() {
+		return healingPotion;
+	}
+
+	public void setHealingPotion(HealingPotion healingPotion) {
+		this.healingPotion = healingPotion;
+	}
+
+	public Monster getMonster() {
+		return monster;
+	}
+
+	public void setMonster(Monster monster) {
+		this.monster = monster;
+	}
+
+	public PillarOfOO getPillarOfOO() {
+		return pillar;
+	}
+
+	public void setPillarOfOO(PillarOfOO pillar) {
+		this.pillar = pillar;
+	}
+
+	public VisionPotion getVisionPotion() {
+		return visionPotion;
+	}
+
+	public void setVisionPotion(VisionPotion visionPotion) {
+		this.visionPotion = visionPotion;
+	}
+	public Entrance getEntrance() {
+		return entrance;
+	}
+
+	public void setEntrance(Entrance entrance) {
+		this.entrance = entrance;
+	}
+
+	public Exit getExit() {
+		return exit;
+	}
+
+	public void setExit(Exit exit) {
+		this.exit = exit;
+	}
+	public Pit getPit() {
+		return pit;
+	}
+
+	public void setPit(Pit pit) {
+		this.pit = pit;
+	}
+
 }
