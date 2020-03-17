@@ -10,46 +10,58 @@ public abstract class Hero extends DungeonCharacter
 	private int pillars;
 	private int visionPotions;
 	private int healingPotions;
-
-	public Room movePlayer(int y, int x, Dungeon d) {
-		
-		if(d.locationIsValid(x, y)) {
-			posX = x;
-			posY = y;
-			d.getRoom(x, y);
-			if(d.getRoom(x, y).getHealingPotion() != null) {
-				this.healingPotions = this.healingPotions + 1;
-				d.getRoom(x, y).setHealingPotion(null);
-				return d.getRoom(x, y);
-			}
-			if(d.getRoom(x, y).getPillarOfOO() != null) {
-				this.pillars = this.pillars + 1;
-				d.getRoom(x, y).setPillarOfOO(null);
-				return d.getRoom(x, y);
-			}
-			if(d.getRoom(x, y).getVisionPotion() != null) {
-				this.visionPotions = this.visionPotions + 1;
-				d.getRoom(x, y).setVisionPotion(null);
-				return d.getRoom(x, y);
-			}
-			if(d.getRoom(x, y).getMonster() != null) {
-				//Do Battle
-				return d.getRoom(x, y);
-			}
-			if(d.getRoom(x, y).getPit() != null) {
-				System.out.println(this.getName() + " Fell in a pit and took five damage");
+	
+	private void visitRoom(Room room) {
+		if(room.getHealingPotion() != null) {
+			System.out.println("NEW ITEM: You picked up a healing potion!");
+			this.healingPotions = this.healingPotions + 1;
+			room.setHealingPotion(null);
+		} else if(room.getPillarOfOO() != null) {
+			System.out.println("NEW ITEM: You picked up the " + room.getPillarOfOO().toString() + " pillar!");
+			this.pillars = this.pillars + 1;
+			room.setPillarOfOO(null);
+		} else if(room.getVisionPotion() != null) {
+			System.out.println("NEW ITEM: You picked up a vision potion!");
+			this.visionPotions = this.visionPotions + 1;
+			room.setVisionPotion(null);
+		} else if(room.getMonster() == null) {
+			if(room.getPit() != null) {
+				System.out.println(this.getName() + " fell down a pit!");
 				this.subtractHitPoints(5);
-				return d.getRoom(x, y);
 			}
 		}
-		else {
-			System.out.println("Cannot Move in that direction");
-			
-		}
-		return d.getRoom(posX, posY);
-		
 	}
 	
+	private Room movePlayer(int x, int y) {
+		Dungeon d = DungeonAdventure.getDungeon();
+		if(d.locationIsValid(y, x)) {
+			posX = x;
+			posY = y;
+			Room room = d.getRoom(y, x);
+			visitRoom(room);
+			return room;
+		} else {
+			System.out.println("Cannot Move in that direction");
+		}
+		return null;
+	}
+	
+	public Room moveRight() {
+		return movePlayer(posX+1, posY);
+	}
+	
+	public Room moveLeft() {
+		return movePlayer(posX-1, posY);
+	}
+
+	public Room moveUp() {
+		return movePlayer(posX, posY-1);
+	}
+
+	public Room moveDown() {
+		return movePlayer(posX, posY+1);
+	}
+
 	public int getPosX() {
 		return posX;
 	}
