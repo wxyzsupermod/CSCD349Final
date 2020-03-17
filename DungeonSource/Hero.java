@@ -125,7 +125,10 @@ public abstract class Hero extends DungeonCharacter
 		this.setName(Keyboard.nextLine());
   }//end readName method
 
-
+ @Override
+ public boolean isAlive() {
+	 return super.isAlive();
+ }
   public boolean defend()
   {
 		return Math.random() <= chanceToBlock;

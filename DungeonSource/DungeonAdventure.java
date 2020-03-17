@@ -97,7 +97,7 @@ public class DungeonAdventure
 				 printRoom();
 				}//end else
 			
-		} while (playAgain());//end do while 
+		} while (theHero.isAlive());//end do while 
 		
 		
 		System.out.println("This is where we print the whole dungeon at the end");
@@ -172,10 +172,7 @@ public class DungeonAdventure
 
 	}//end generateMonster method
 
-	public static boolean playerAlive() {
-		return theHero.isAlive();
-	}
-
+	
 	public static boolean playAgain()
 	{
 		char again;
