@@ -7,9 +7,10 @@ public abstract class DungeonCharacter
 	private int attackSpeed;
 	private double chanceToHit;
 	private int damageMin, damageMax;
+	private int healthPoints;
 
 	public DungeonCharacter(String name, int hitPoints, int attackSpeed,
-				     double chanceToHit, int damageMin, int damageMax)
+				     double chanceToHit, int damageMin, int damageMax,int healthPoints)
 	{
 
 		this.name = name;
@@ -18,6 +19,7 @@ public abstract class DungeonCharacter
 		this.chanceToHit = chanceToHit;
 		this.damageMin = damageMin;
 		this.damageMax = damageMax;
+		this.healthPoints = healthPoints;
 
 	}//end constructor
 
@@ -109,7 +111,7 @@ public String getName() {
 
     public boolean isAlive()
 	{
-	  return (hitPoints > 0);
+	  return (healthPoints > 0);
 	}//end isAlive method
 
    
