@@ -111,9 +111,9 @@ public abstract class Hero extends DungeonCharacter
 
   public Hero(String name, int hitPoints, int attackSpeed,
 				     double chanceToHit, int damageMin, int damageMax,
-					 double chanceToBlock, int healthPoints)
+					 double chanceToBlock)
   {
-	super(name, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax, healthPoints);
+	super(name, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax);
 	this.chanceToBlock = chanceToBlock;
 	readName();
   }

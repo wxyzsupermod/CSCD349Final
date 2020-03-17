@@ -5,7 +5,7 @@ public class Gandalf extends Hero {
 	private static Scanner Keyboard = new Scanner(System.in);
 
 	public Gandalf() {
-		super("Gandalf the Great", 130, 5, .7, 45, 70, .5, 95);
+		super("Gandalf the Great", 130, 5, .7, 45, 70, .5);
 	}
 	
 	public void iceSpell(DungeonCharacter opponent)

@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Sorcerer extends Hero{
 	private static Scanner Keyboard = new Scanner(System.in);
 	public Sorcerer() {
-		super("Sorcerer", 140, 8, .5, 55, 75, .6, 90);
+		super("Sorcerer", 140, 8, .5, 55, 75, .6);
 	}
 	
 	public void tornadoSpell(DungeonCharacter opponent)
