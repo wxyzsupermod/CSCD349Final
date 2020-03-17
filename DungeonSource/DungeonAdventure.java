@@ -26,82 +26,62 @@ public class DungeonAdventure
 {
 	private static Scanner Keyboard = new Scanner(System.in);
     private static Dungeon dungeon;
+    private static Hero theHero;
+    private static int curX = 0;
+	private static int curY = 0;
 	public static void main(String[] args)
 	{
     	Scanner kb = new Scanner(System.in);
-		Hero theHero;
 		Monster theMonster;
 		dungeon = new Dungeon(5, 5);
-		int curX = 0;
-		int curY = 0;
-		
-		Room playerCurrentPos = dungeon.getRoom(curX,curY);
-		System.out.println("Would you like to move your player down or right?"
-				+ " (d or r)");
-		String decision = kb.next();
-		
-		if(decision == "d") {
-			System.out.println("Entering the loop");
-			playerCurrentPos = dungeon.getRoom(curX +1, curY);
-			System.out.println(playerCurrentPos);
-		}
-		else if( decision == "r") {
-			playerCurrentPos = dungeon.getRoom(curX, curY + 1);
-		}
-		//System.out.println("Use a potion or move? (p or m)");
-		//decision = kb.next();
-		//if(decision == "p") {
-			//use potion
-	//	}
-		//else if(decision == "m") {
-			//System.out.println("Move left, right, up or down?(l,r,u,d)");
-			//decision = kb.next();
-			//if(decision == "l") {
-				
-			//}
-			//else if( decision == "r") {
-				
-			//}
-			//else if( decision == "u") {
-				
-			//}
-			//else if(decision == "d") {
-				
-			//}
-		//}
-		
-		
-		//Place the hero into the room in the dungeon[0][0] containing [I]
-		//determine if the player wants to move or use a potion;
-		//print the current room number 
-		//pick up anything in room or fight monster
-		//move again- 
-		//until the player reaches [4][4] the exit containing [E];
-		//if the room contains monster do what is below
-		//if it contains potion increase potion number and decide if user
-		//wants to use it
-		//if it's a pit, decrease hitPoints and then decide the move, next move
-		//
-		
 		do
-		{
-		    
-			
+		{//begin do
 			int option = displayMenu(kb);
+			
 			if(option != 7) {
 				theHero = chooseHero(option);
 				theMonster = generateMonster();
 				
-				battle(theHero, theMonster);
-			} 
-			else {
-				 printRoom();
+				System.out.println("Would you like to move your player down or right? (d or r)");
+				char decision = kb.next().charAt(0);
+				Room currentRoom;
+				if(decision == 'd') {//begin if
+					currentRoom = theHero.movePlayer(curX ++, curY, dungeon);
+				} else {
+					currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
 				}
-		} while (playAgain());
+				theMonster = currentRoom.getMonster();
+				if(theMonster!=null) {
+					battle(theHero, theMonster);
+				}
+				System.out.println("The current room is: " + theHero.getPosX() + " and " + theHero.getPosY());
+				while (theHero.getHitPoints() != 0) {
+					System.out.println("Use a potion or move? (p or m)");
+					decision = kb.next().charAt(0);
+					if(decision == 'p') {
+						//TODO: Use potion, determine if potion is healing or vision
+					} else if (decision == 'm') {//begin else if
+						System.out.println("Move left, right, up or down?(l,r,u,d)");
+						decision = kb.next().charAt(0);
+						if (decision == 'l') {
+							currentRoom = theHero.movePlayer(curX, curY --, dungeon);
+						} else if (decision == 'r') {
+							currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
+						} else if (decision == 'u') {
+							currentRoom = theHero.movePlayer(curX --, curY, dungeon);
+						} else {
+							currentRoom = theHero.movePlayer(curX ++, curY, dungeon);
+						}
+					}
+					System.out.println("The current room is: " + theHero.getPosX() + " and " + theHero.getPosY());
+				}
+			} else {
+				printRoom();
+			}
+		} while (theHero != null && theHero.isAlive());
 		
 		System.out.println("This is where we print the whole dungeon at the end");
 		printRoom();
-		
 	}
 
     private static int displayMenu(Scanner kb)
@@ -171,7 +151,7 @@ public class DungeonAdventure
 
 	}//end generateMonster method
 
-
+	
 	public static boolean playAgain()
 	{
 		char again;
@@ -180,6 +160,7 @@ public class DungeonAdventure
 		again = Keyboard.next().charAt(0);
 
 		return (again == 'Y' || again == 'y');
+		//return theHero.isAlive();
 	}//end playAgain method
 
 

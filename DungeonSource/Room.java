@@ -4,22 +4,6 @@ public class Room {
 	private HealingPotion healingPotion;
 	private Pit pit;
 	private Entrance entrance;
-	public Entrance getEntrance() {
-		return entrance;
-	}
-
-	public void setEntrance(Entrance entrance) {
-		this.entrance = entrance;
-	}
-
-	public Exit getExit() {
-		return exit;
-	}
-
-	public void setExit(Exit exit) {
-		this.exit = exit;
-	}
-
 	private Exit exit;
 	private Monster monster;
 	private PillarOfOO pillar;
@@ -36,6 +20,7 @@ public class Room {
 	}
 	
 	public void fill() {
+		// TODO: 10% chance, independent
 		if (entrance != null || exit != null) {
 			return;
 		}
@@ -135,5 +120,58 @@ public class Room {
 	public boolean hasMixedItems() {
 		return (this.healingPotion != null && this.pit != null) || (this.visionPotion != null);
 	}	
-	
+	public HealingPotion getHealingPotion() {
+		return healingPotion;
+	}
+
+	public void setHealingPotion(HealingPotion healingPotion) {
+		this.healingPotion = healingPotion;
+	}
+
+	public Monster getMonster() {
+		return monster;
+	}
+
+	public void setMonster(Monster monster) {
+		this.monster = monster;
+	}
+
+	public PillarOfOO getPillarOfOO() {
+		return pillar;
+	}
+
+	public void setPillarOfOO(PillarOfOO pillar) {
+		this.pillar = pillar;
+	}
+
+	public VisionPotion getVisionPotion() {
+		return visionPotion;
+	}
+
+	public void setVisionPotion(VisionPotion visionPotion) {
+		this.visionPotion = visionPotion;
+	}
+	public Entrance getEntrance() {
+		return entrance;
+	}
+
+	public void setEntrance(Entrance entrance) {
+		this.entrance = entrance;
+	}
+
+	public Exit getExit() {
+		return exit;
+	}
+
+	public void setExit(Exit exit) {
+		this.exit = exit;
+	}
+	public Pit getPit() {
+		return pit;
+	}
+
+	public void setPit(Pit pit) {
+		this.pit = pit;
+	}
+
 }
