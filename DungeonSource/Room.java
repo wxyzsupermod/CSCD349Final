@@ -20,6 +20,7 @@ public class Room {
 	}
 	
 	public void fill() {
+		// TODO: 10% chance, independent
 		if (entrance != null || exit != null) {
 			return;
 		}

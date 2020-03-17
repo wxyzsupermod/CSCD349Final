@@ -42,66 +42,47 @@ public class DungeonAdventure
 				theHero = chooseHero(option);
 				theMonster = generateMonster();
 				
-				//battle(theHero, theMonster);
-				System.out.println("Would you like to move your player down or right?"
-						+ " (d or r)");
+				System.out.println("Would you like to move your player down or right? (d or r)");
 				char decision = kb.next().charAt(0);
 				Room currentRoom;
 				if(decision == 'd') {//begin if
-					currentRoom =theHero.movePlayer(curX ++, curY, dungeon);
-					
-				}//end if
-				else {//begin else
+					currentRoom = theHero.movePlayer(curX ++, curY, dungeon);
+				} else {
 					currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
-				}//end else if
+				}
 				theMonster = currentRoom.getMonster();
 				if(theMonster!=null) {
 					battle(theHero, theMonster);
 				}
-				System.out.println("The current room is: " + 
-						theHero.getPosX() + " and " + theHero.getPosY());
-				while (theHero.getHealingPotions()!=0) {
+				System.out.println("The current room is: " + theHero.getPosX() + " and " + theHero.getPosY());
+				while (theHero.getHitPoints() != 0) {
 					System.out.println("Use a potion or move? (p or m)");
 					decision = kb.next().charAt(0);
-					if(decision == 'p') {//begin if
-					//use potion
-					//determine if potion is vision or healing
-					
-					}//end if
-					else if(decision == 'm') {//begin else if
+					if(decision == 'p') {
+						//TODO: Use potion, determine if potion is healing or vision
+					} else if (decision == 'm') {//begin else if
 						System.out.println("Move left, right, up or down?(l,r,u,d)");
 						decision = kb.next().charAt(0);
-					if(decision == 'l') {//begin inner if
-						currentRoom = theHero.movePlayer(curX, curY --, dungeon);
-					}//end inner if
-					else if( decision == 'r') {//begin inner else if
-						currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
-					}//end inner else if
-					else if( decision == 'u') {//begin inner else if
-						currentRoom = theHero.movePlayer(curX --, curY, dungeon);
-					}//end inner else if
-					else {//begin inner else if
-						currentRoom = theHero.movePlayer(curX ++, curY, dungeon);
-						
-					}//end inner else 
-				}//end if
-				System.out.println("The current room is: " + 
-						theHero.getPosX() + " and " + theHero.getPosY());
-			}//end while theHero.getHealingPotion != 0
-				
-				
-			} //end if option!=7
-			else {//begin else
-				 printRoom();
-				}//end else
-			
-		} while (theHero.isAlive());//end do while 
-		
+						if (decision == 'l') {
+							currentRoom = theHero.movePlayer(curX, curY --, dungeon);
+						} else if (decision == 'r') {
+							currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
+						} else if (decision == 'u') {
+							currentRoom = theHero.movePlayer(curX --, curY, dungeon);
+						} else {
+							currentRoom = theHero.movePlayer(curX ++, curY, dungeon);
+						}
+					}
+					System.out.println("The current room is: " + theHero.getPosX() + " and " + theHero.getPosY());
+				}
+			} else {
+				printRoom();
+			}
+		} while (theHero != null && theHero.isAlive());
 		
 		System.out.println("This is where we print the whole dungeon at the end");
 		printRoom();
-		
-	}//end main
+	}
 
     private static int displayMenu(Scanner kb)
 	{
