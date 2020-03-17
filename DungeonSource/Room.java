@@ -59,33 +59,26 @@ public class Room {
 	
 	public void printTopRow() {
 		if (y == 0) {
-			System.out.print("* * *");
+			System.out.print("* * ");
 		} else {
-			System.out.print("* - *");
+			System.out.print("* - ");
 		}
 	}
 	
 	public void printMiddleRow() {
-		String left, right;
+		String left;
 		
 		if (x == 0) {
 			left = "*";
 		} else {
 			left = "|";
 		}
-		if (x == 4) {
-			right = "*";
-		} else {
-			right = "|";
-		}
-		System.out.print(left + " " + getContainingObject() + " " + right);
+		System.out.print(left + " " + getContainingObject() + " ");
 	}
 	
 	public void printBottomRow() {
 		if (y == 4) {
-			System.out.print("* * *");
-		} else {
-			System.out.print("* - *");
+			System.out.print("* * ");
 		}
 	}
 	

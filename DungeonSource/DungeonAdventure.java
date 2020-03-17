@@ -184,20 +184,21 @@ public class DungeonAdventure
 	public static void printRoom() {
 		Room[][] rooms = dungeon.getRooms();
 	      
-	      System.out.print("**********************");
 	      for(int i =0; i < rooms.length; i++){
-	         System.out.println();  
-	         System.out.print("*");   
 	         
-	         for(int j = 0; j < rooms.length; j++){         
-	            rooms[i][j] = new Room();
-	            System.out.print(rooms[i][j] + " ");
-	            System.out.print("|");
-	         }
-	         System.out.print("*");
+	         for(int j = 0; j < rooms[i].length; j++){         
+		            rooms[i][j].printTopRow();
+		         }
+	         System.out.println("*");
+	         for(int j = 0; j < rooms[i].length; j++){         
+		            rooms[i][j].printMiddleRow();
+		         }
+	         System.out.println("*");
+	         for(int j = 0; j < rooms[i].length; j++){         
+		            rooms[i][j].printBottomRow();
+		         }
 	      }
-	      System.out.println();
-	      System.out.println("**********************");
+	      System.out.println("*");
 	}
 
 }//end DungeonAdventure class
