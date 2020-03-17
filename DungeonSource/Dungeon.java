@@ -27,7 +27,7 @@ public class Dungeon
 		for (int i = 0; i < roomsHeight; i ++) {
 			rooms[i] = new Room[roomsWidth];
 			for (int j = 0; j < roomsWidth; j ++) {
-				rooms[i][j] = new Room();
+				rooms[i][j] = new Room(j, i);
 			}
 		}
 	}
