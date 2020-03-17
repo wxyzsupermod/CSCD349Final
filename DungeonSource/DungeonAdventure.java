@@ -46,17 +46,20 @@ public class DungeonAdventure
 				System.out.println("Would you like to move your player down or right?"
 						+ " (d or r)");
 				char decision = kb.next().charAt(0);
-				
+				Room currentRoom;
 				if(decision == 'd') {//begin if
-					theHero.movePlayer(curX ++, curY, dungeon);
-					System.out.println("The current room is: " + 
-							theHero.getPosX() + " and " + theHero.getPosY());
+					currentRoom =theHero.movePlayer(curX ++, curY, dungeon);
+					
 				}//end if
-				else if( decision == 'r') {//begin elseif
-					theHero.movePlayer(curX, curY ++, dungeon);
-					System.out.println("The current room is: " + 
-							theHero.getPosX() + " and " + theHero.getPosY());
+				else {//begin else
+					currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
 				}//end else if
+				theMonster = currentRoom.getMonster();
+				if(theMonster!=null) {
+					battle(theHero, theMonster);
+				}
+				System.out.println("The current room is: " + 
+						theHero.getPosX() + " and " + theHero.getPosY());
 				while (theHero.getHealingPotions()!=0) {
 					System.out.println("Use a potion or move? (p or m)");
 					decision = kb.next().charAt(0);
@@ -69,26 +72,21 @@ public class DungeonAdventure
 						System.out.println("Move left, right, up or down?(l,r,u,d)");
 						decision = kb.next().charAt(0);
 					if(decision == 'l') {//begin inner if
-						theHero.movePlayer(curX, curY --, dungeon);
-						System.out.println("The current room is: " + 
-								theHero.getPosX() + " and " + theHero.getPosY());
+						currentRoom = theHero.movePlayer(curX, curY --, dungeon);
 					}//end inner if
 					else if( decision == 'r') {//begin inner else if
-						theHero.movePlayer(curX, curY ++, dungeon);
-						System.out.println("The current room is: " + 
-								theHero.getPosX() + " and " + theHero.getPosY());
+						currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
 					}//end inner else if
 					else if( decision == 'u') {//begin inner else if
-						theHero.movePlayer(curX --, curY, dungeon);
-						System.out.println("The current room is: " + 
-								theHero.getPosX() + " and " + theHero.getPosY());
+						currentRoom = theHero.movePlayer(curX --, curY, dungeon);
 					}//end inner else if
-					else if(decision == 'd') {//begin inner else if
-						theHero.movePlayer(curX ++, curY, dungeon);
-						System.out.println("The current room is: " + 
-								theHero.getPosX() + " and " + theHero.getPosY());
-					}//end inner else if
+					else {//begin inner else if
+						currentRoom = theHero.movePlayer(curX ++, curY, dungeon);
+						
+					}//end inner else 
 				}//end if
+				System.out.println("The current room is: " + 
+						theHero.getPosX() + " and " + theHero.getPosY());
 			}//end while theHero.getHealingPotion != 0
 				
 				
