@@ -161,7 +161,7 @@ public void subtractHitPoints(int hitPoints)
 	@Override
 	public String toString() {
 		return this.getName() + " has " + this.getHitPoints() + " Hit Points " + this.getHealingPotions() + " Healing Potions "
-				+ this.getVisionPotions() + " Vision Potions " + this.getPillars() + " Pillars Of OO ";
+				+ this.getVisionPotions() + " Vision Potions " + this.getPillars() + " Pillars Of OO " ;
 	}
 
 }//end Hero class
