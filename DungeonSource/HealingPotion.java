@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class HealingPotion {
+public class HealingPotion extends Potion {
 	private int healPoints = 0;
 	
 	public HealingPotion() {
@@ -13,5 +13,10 @@ public class HealingPotion {
 
 	public void setHealPoints(int healPoints) {
 		this.healPoints = healPoints;
+	}
+	
+	@Override
+	public void affectCharacter(DungeonCharacter c) {
+		c.addHitPoints(healPoints);
 	}
 }

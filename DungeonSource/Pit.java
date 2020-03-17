@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Pit {
+public class Pit extends DungeonEntity {
 	private int damageDone;
 	
 	public Pit() {

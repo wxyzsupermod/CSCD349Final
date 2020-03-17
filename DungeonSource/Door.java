@@ -1,4 +1,8 @@
+public class Door extends DungeonEntity{
+   
+   
 
-public class Door {
-
+   public String toString(){
+      return super.toString();
+   }
 }

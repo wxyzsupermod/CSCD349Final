@@ -25,12 +25,14 @@ import java.util.Scanner;
 public class DungeonAdventure
 {
 	private static Scanner Keyboard = new Scanner(System.in);
-    public static void main(String[] args)
+    private static Dungeon dungeon;
+	public static void main(String[] args)
 	{
     	Scanner kb = new Scanner(System.in);
 		Hero theHero;
 		Monster theMonster;
-		//Dungeon dungeon = new Dungeon();
+		dungeon = new Dungeon(5,5);
+		
 		//Room beginning = new Dungeon[0][0];
 		//System.out.println("Move your player or use a potion? (m or p)");
 		//String decision = kb.next();
@@ -59,49 +61,14 @@ public class DungeonAdventure
 				battle(theHero, theMonster);
 			} 
 			else {
-				 Room[][] rooms = new Room[5][5];
-			      
-			      System.out.print("**********************");
-			      for(int i =0; i < rooms.length; i++){
-			         System.out.println();  
-			         System.out.print("*");   
-			         
-			         for(int j = 0; j < rooms.length; j++){         
-			            rooms[i][j] = new Room();
-			            System.out.print(rooms[i][j] + " ");
-			            System.out.print("|");
-			         }
-			         System.out.print("*");
-			      }
-			      System.out.println();
-			      System.out.println("**********************");
-				System.out.println("This is our hidden menu option where we print the dungeon");
+				 printRoom();
 				}
 		} while (playAgain());
-		//for(Room : dungeon) {
-			//System.out.println(Room);
-		//}
+		
 		System.out.println("This is where we print the whole dungeon at the end");
-		 Room[][] rooms = new Room[5][5];
-	      
-	      System.out.print("**********************");
-	      for(int i =0; i < rooms.length; i++){
-	         System.out.println();  
-	         System.out.print("*");   
-	         
-	         for(int j = 0; j < rooms.length; j++){         
-	            rooms[i][j] = new Room();
-	            System.out.print(rooms[i][j] + " ");
-	            System.out.print("|");
-	         }
-	         System.out.print("*");
-	      }
-	      System.out.println();
-	      System.out.println("**********************");
-	   }
-		//this is where we print the entire dungeon at the end
-
-
+		printRoom();
+		
+	}
 
     private static int displayMenu(Scanner kb)
 	{
@@ -213,6 +180,24 @@ public class DungeonAdventure
 			System.out.println("Quitters never win ;-)");
 
 	}//end battle method
-
+	
+	public static void printRoom() {
+		Room[][] rooms = dungeon.getRooms();
+	      
+	      System.out.print("**********************");
+	      for(int i =0; i < rooms.length; i++){
+	         System.out.println();  
+	         System.out.print("*");   
+	         
+	         for(int j = 0; j < rooms.length; j++){         
+	            rooms[i][j] = new Room();
+	            System.out.print(rooms[i][j] + " ");
+	            System.out.print("|");
+	         }
+	         System.out.print("*");
+	      }
+	      System.out.println();
+	      System.out.println("**********************");
+	}
 
 }//end DungeonAdventure class
