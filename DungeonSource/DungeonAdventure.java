@@ -2,21 +2,16 @@
  * Corbin Smith
  * Yousef Baghlar
  * Jordan Fischer
- * GamePlay: The player is asked to name their hero
- * The player is placed at the entrance of the dungeon
- * then they get to move right or down
- * based on what is in the room: pit- lose points move to another room
- * potion: increase potion number and see if they want to use it
- * then move again if there is a monster:
- * The user is first prompted to choose a hero, then user is
- * asked to name the character. After this the number of rounds is 
- * calculated, and the user gets to choose between an attack or increasing
- * his own hitPoints. Based on the choice the battle occurs for the 
- * number of rounds specified and then the user is asked to quit or 
- * continue, if they quit a message is printed, and they are prompted 
- * to play again. If they say n, then the entire dungeon is printed. 
+ * GamePlay: The player is asked to choose and name their hero
  * The hidden menu option is lucky number 7, this displays the 
  * entire dungeon.
+ * The player is placed at the entrance of the dungeon
+ * then they get to move right or down.
+ * From there they are moved and depending if they have a potion or not, get asked to move 
+ * or use potion, then which direction they want to move. 
+ * The game ends when the hero dies, or reaches the end.
+ * If the player does not wish to play again the dungeon is printed.
+ * 
  *  
  */
 
@@ -32,26 +27,9 @@ public class DungeonAdventure
 		Hero theHero = null;
 		Monster theMonster;
 		char decision;
-		
-		
-		
-		//Place the hero into the room in the dungeon[0][0] containing [I]
-		//determine if the player wants to move or use a potion;
-		//print the current room number 
-		//pick up anything in room or fight monster
-		//move again- 
-		//until the player reaches [4][4] the exit containing [E];
-		//if the room contains monster do what is below
-		//if it contains potion increase potion number and decide if user
-		//wants to use it
-		//if it's a pit, decrease hitPoints and then decide the move, next move
-		//
-		
 		do
 		{
-		    
-			
-			int option = displayMenu(kb);
+		    int option = displayMenu(kb);
 			if(option != 7) {
 				theHero = chooseHero(option);
 				theMonster = generateMonster();
@@ -63,7 +41,6 @@ public class DungeonAdventure
 				}
 			while(theHero.isAlive()) {
 				
-			
 			dungeon = new Dungeon(5, 5);
 			int curRow= 0;
 			int curColumn = 0;
@@ -97,22 +74,22 @@ public class DungeonAdventure
 				if(decision == 'l') {
 					theHero.movePlayer(curRow -1, curColumn, dungeon);
 					System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
-					 
+					 curRow--;
 				}
 				else if( decision == 'r') {
 					theHero.movePlayer(curRow +1, curColumn, dungeon);
 					System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
-					 
+					 curRow++;
 				}
 				else if( decision == 'u') {
 					theHero.movePlayer(curRow, curColumn-1, dungeon);
 					System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
-					 
+					 curColumn--;
 				}
 				else if(decision == 'd') {
 					theHero.movePlayer(curRow, curColumn +1, dungeon);
 					System.out.println("the Current room is " + theHero.getPosX() + " ," + theHero.getPosY());
-					 
+					 curColumn++;
 				}
 			}
 		}
