@@ -107,7 +107,7 @@ public class Room {
 			return "O";
 		}
 		
-		else if(this.healingPotion != null || this.pit != null || this.visionPotion != null) {
+		else if(hasMixedItems()) {
 			return "M";
 		}
 		
@@ -132,51 +132,8 @@ public class Room {
 		
 	}
 	
-	public String toString() {
-		String containingObject = "";
-		String roomDesignEW;
-		String roomDesignNS;
-		
-		if((this.healingPotion != null && this.pit != null) || (this.visionPotion != null)) {
-			containingObject = " M ";
-		}
-		
-		else if(this.healingPotion != null) {
-			containingObject =  " H ";
-		}
-		
-		else if(this.pit != null) {
-			containingObject =  " P ";
-		}
-		
-		else if(this.entrance != null) {
-			containingObject =  " I ";
-		}
-		
-		else if(this.exit != null) {
-			containingObject =  " O ";
-		}
-		
-		else if(this.monster != null) {
-			containingObject =  " X ";
-		}
-		
-		else if(this.visionPotion != null) {
-			containingObject = " V ";
-		}
-		
-		
-		
-		else {
-			containingObject =  "E";
-		}
-		
-		roomDesignNS = "\n" + " ***" + "\n";
-		roomDesignEW = "|" + containingObject + "|";
-		
-		return roomDesignNS + roomDesignEW + roomDesignNS;
-		
-	}
-	
+	public boolean hasMixedItems() {
+		return (this.healingPotion != null && this.pit != null) || (this.visionPotion != null);
+	}	
 	
 }

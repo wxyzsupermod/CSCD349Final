@@ -1,6 +1,6 @@
 /*Melody Kinyon
  * Corbin Smith
- * Yousef 
+ * Yousef Baghlar
  * Jordan Fischer
  * GamePlay: The player is asked to name their hero
  * The player is placed at the entrance of the dungeon
@@ -31,7 +31,7 @@ public class DungeonAdventure
     	Scanner kb = new Scanner(System.in);
 		Hero theHero;
 		Monster theMonster;
-		dungeon = new Dungeon(5,5);
+		dungeon = new Dungeon(5, 5);
 		
 		//Room beginning = new Dungeon[0][0];
 		//System.out.println("Move your player or use a potion? (m or p)");
