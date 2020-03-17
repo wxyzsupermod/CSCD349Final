@@ -27,8 +27,8 @@ public class DungeonAdventure
 	private static Scanner Keyboard = new Scanner(System.in);
     private static Dungeon dungeon;
     private static Hero theHero;
-    private static int curX = 0;
-	private static int curY = 0;
+    private static int curRow = 0;
+	private static int curColumn = 0;
 	public static void main(String[] args)
 	{
     	Scanner kb = new Scanner(System.in);
@@ -42,66 +42,48 @@ public class DungeonAdventure
 				theHero = chooseHero(option);
 				theMonster = generateMonster();
 				
-				//battle(theHero, theMonster);
-				System.out.println("Would you like to move your player down or right?"
-						+ " (d or r)");
+				System.out.println("Would you like to move your player down or right? (d or r)");
 				char decision = kb.next().charAt(0);
 				Room currentRoom;
 				if(decision == 'd') {//begin if
-					currentRoom =theHero.movePlayer(curX ++, curY, dungeon);
-					
-				}//end if
-				else {//begin else
-					currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
-				}//end else if
+					currentRoom = theHero.movePlayer(curRow++, curColumn, dungeon);
+				} else {
+					currentRoom = theHero.movePlayer(curRow, curColumn++, dungeon);
+				}
 				theMonster = currentRoom.getMonster();
 				if(theMonster!=null) {
 					battle(theHero, theMonster);
 				}
-				System.out.println("The current room is: " + 
-						theHero.getPosX() + " and " + theHero.getPosY());
-				while (theHero.getHealingPotions()!=0) {
+				//System.out.println("The current room is: " + theHero.getPosX() + " and " + theHero.getPosY());
+				while (theHero.getHitPoints() != 0) {
 					System.out.println("Use a potion or move? (p or m)");
 					decision = kb.next().charAt(0);
-					if(decision == 'p') {//begin if
-					//use potion
-					//determine if potion is vision or healing
-					
-					}//end if
-					else if(decision == 'm') {//begin else if
+					if(decision == 'p') {
+						//TODO: Use potion, determine if potion is healing or vision
+					} else if (decision == 'm') {
 						System.out.println("Move left, right, up or down?(l,r,u,d)");
 						decision = kb.next().charAt(0);
-					if(decision == 'l') {//begin inner if
-						currentRoom = theHero.movePlayer(curX, curY --, dungeon);
-					}//end inner if
-					else if( decision == 'r') {//begin inner else if
-						currentRoom = theHero.movePlayer(curX, curY ++, dungeon);
-					}//end inner else if
-					else if( decision == 'u') {//begin inner else if
-						currentRoom = theHero.movePlayer(curX --, curY, dungeon);
-					}//end inner else if
-					else {//begin inner else if
-						currentRoom = theHero.movePlayer(curX ++, curY, dungeon);
-						
-					}//end inner else 
-				}//end if
-				System.out.println("The current room is: " + 
-						theHero.getPosX() + " and " + theHero.getPosY());
-			}//end while theHero.getHealingPotion != 0
-				
-				
-			} //end if option!=7
-			else {//begin else
-				 printRoom();
-				}//end else
-			
-		} while (theHero.isAlive());//end do while 
-		
+						if (decision == 'l') {
+							currentRoom = theHero.movePlayer(curRow, curColumn--, dungeon);
+						} else if (decision == 'r') {
+							currentRoom = theHero.movePlayer(curRow, curColumn ++, dungeon);
+						} else if (decision == 'u') {
+							currentRoom = theHero.movePlayer(curRow--, curColumn, dungeon);
+						} else {
+							currentRoom = theHero.movePlayer(curRow++, curColumn, dungeon);
+						}
+						System.out.println("The current room is: " + theHero.getPosX() + " and " + theHero.getPosY());
+					}
+					
+				}
+			} else {
+				printDungeon();
+			}
+		} while (theHero != null && theHero.isAlive());
 		
 		System.out.println("This is where we print the whole dungeon at the end");
-		printRoom();
-		
-	}//end main
+		printDungeon();
+	}
 
     private static int displayMenu(Scanner kb)
 	{
@@ -154,7 +136,7 @@ public class DungeonAdventure
 		int choice;
 		MonsterFactory factory = new MonsterFactory();
 
-		choice = (int)(Math.random() * 3) + 1;
+		choice = (int)(Math.random() * 6) + 1;
 		
 		if(choice == 1) {
 			return factory.createMonster(1);
@@ -164,10 +146,18 @@ public class DungeonAdventure
 			return factory.createMonster(2);
 		}
 		
-		else {
+		else if(choice == 3){
 			return factory.createMonster(3);
 		}
-
+		else if( choice == 4) {
+			return factory.createMonster(4);
+		}
+		else if (choice == 5) {
+			return factory.createMonster(5);
+			
+		}else
+			return factory.createMonster(6);
+		
 	}//end generateMonster method
 
 	
@@ -215,7 +205,9 @@ public class DungeonAdventure
 
 	}//end battle method
 	
-	public static void printRoom() {
+	
+	
+	public static void printDungeon() {
 		Room[][] rooms = dungeon.getRooms();
 	      
 	      for(int i =0; i < rooms.length; i++){

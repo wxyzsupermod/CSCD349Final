@@ -14,6 +14,15 @@ public class MonsterFactory {
 			return new Skeleton();
 		}
 		
+		else if( choice == 4) {
+			return new Cyclops();
+		}
+		else if( choice == 5) {
+			return new Cerberus();
+		}
+		else if( choice == 6){
+			return new Minotaur();
+		}
 		else {
 			return null;
 		}
