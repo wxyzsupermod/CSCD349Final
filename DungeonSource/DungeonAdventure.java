@@ -32,10 +32,44 @@ public class DungeonAdventure
 		Hero theHero;
 		Monster theMonster;
 		dungeon = new Dungeon(5, 5);
+		int curX = 0;
+		int curY = 0;
 		
-		//Room beginning = new Dungeon[0][0];
-		//System.out.println("Move your player or use a potion? (m or p)");
-		//String decision = kb.next();
+		Room playerCurrentPos = dungeon.getRoom(curX,curY);
+		System.out.println("Would you like to move your player down or right?"
+				+ " (d or r)");
+		String decision = kb.next();
+		
+		if(decision == "d") {
+			System.out.println("Entering the loop");
+			playerCurrentPos = dungeon.getRoom(curX +1, curY);
+			System.out.println(playerCurrentPos);
+		}
+		else if( decision == "r") {
+			playerCurrentPos = dungeon.getRoom(curX, curY + 1);
+		}
+		//System.out.println("Use a potion or move? (p or m)");
+		//decision = kb.next();
+		//if(decision == "p") {
+			//use potion
+	//	}
+		//else if(decision == "m") {
+			//System.out.println("Move left, right, up or down?(l,r,u,d)");
+			//decision = kb.next();
+			//if(decision == "l") {
+				
+			//}
+			//else if( decision == "r") {
+				
+			//}
+			//else if( decision == "u") {
+				
+			//}
+			//else if(decision == "d") {
+				
+			//}
+		//}
+		
 		
 		//Place the hero into the room in the dungeon[0][0] containing [I]
 		//determine if the player wants to move or use a potion;

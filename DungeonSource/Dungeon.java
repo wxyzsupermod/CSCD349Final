@@ -32,10 +32,10 @@ public class Dungeon
 				rooms[i][j] = factory.createRoom(j, i);
 				if (i == 0 && j == 0) {
 					rooms[i][j].setEntrance (entrance);
-					System.out.println("Add entrance");
+					//System.out.println("Add entrance");
 				} else if (i == 4 && j == 4) {
 					rooms[i][j].setExit (exit);
-					System.out.println("Add exit");
+					//System.out.println("Add exit");
 				}
 			}
 		}
