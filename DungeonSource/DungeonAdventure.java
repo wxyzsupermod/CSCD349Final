@@ -133,29 +133,6 @@ public class DungeonAdventure
 		return hero;
 	}//end chooseHero method
 	
-	
-	public static Monster generateMonster()
-	{
-		int choice;
-		MonsterFactory factory = new MonsterFactory();
-
-		choice = (int)(Math.random() * 3) + 1;
-		
-		if(choice == 1) {
-			return factory.createMonster(1);
-		}
-		
-		else if(choice == 2) {
-			return factory.createMonster(2);
-		}
-		
-		else {
-			return factory.createMonster(3);
-		}
-
-	}//end generateMonster method
-
-	
 	public static boolean playAgain()
 	{
 		char again;
