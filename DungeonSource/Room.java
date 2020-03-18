@@ -9,7 +9,7 @@ public class Room {
 	private PillarOfOO pillar;
 	private VisionPotion visionPotion;
 	
-	private final int x, y;
+	public final int x, y;
 	
 	
 	public Room(int x, int y) {
@@ -103,8 +103,9 @@ public class Room {
 	}
 	
 	public boolean hasMixedItems() {
-		return (this.healingPotion != null && this.pit != null) || (this.visionPotion != null);
-	}	
+		return (this.healingPotion == null ? 0 : 1) + (this.visionPotion == null ? 0 : 1) + (this.pit == null ? 0 : 1) > 1;
+	}
+	
 	public HealingPotion getHealingPotion() {
 		return healingPotion;
 	}
@@ -142,6 +143,10 @@ public class Room {
 
 	public void setEntrance(boolean e) {
 		this.isEntrance = e;
+		this.healingPotion = null;
+		this.visionPotion = null;
+		this.pit = null;
+		this.monster = null;
 	}
 
 	public boolean getExit() {
@@ -150,6 +155,10 @@ public class Room {
 
 	public void setExit(boolean e) {
 		this.isExit = e;
+		this.healingPotion = null;
+		this.visionPotion = null;
+		this.pit = null;
+		this.monster = null;
 	}
 	
 	public Pit getPit() {

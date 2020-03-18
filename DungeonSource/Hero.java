@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public abstract class Hero extends DungeonCharacter
@@ -8,13 +9,13 @@ public abstract class Hero extends DungeonCharacter
 	private int posX;
 	private int posY;
 	private int pillars;
-	private int visionPotions;
-	private int healingPotions;
+	private ArrayList<VisionPotion> visionPotions;
+	private ArrayList<HealingPotion> healingPotions;
 	
 	private void visitRoom(Room room) {
 		if(room.getHealingPotion() != null) {
 			System.out.println("NEW ITEM: You picked up a healing potion!");
-			this.healingPotions = this.healingPotions + 1;
+			this.healingPotions.add(room.getHealingPotion());
 			room.setHealingPotion(null);
 		} else if(room.getPillarOfOO() != null) {
 			System.out.println("NEW ITEM: You picked up the " + room.getPillarOfOO().toString() + " pillar!");
@@ -22,7 +23,7 @@ public abstract class Hero extends DungeonCharacter
 			room.setPillarOfOO(null);
 		} else if(room.getVisionPotion() != null) {
 			System.out.println("NEW ITEM: You picked up a vision potion!");
-			this.visionPotions = this.visionPotions + 1;
+			this.visionPotions.add(room.getVisionPotion());
 			room.setVisionPotion(null);
 		} else if(room.getMonster() == null) {
 			if(room.getPit() != null) {
@@ -61,6 +62,27 @@ public abstract class Hero extends DungeonCharacter
 	public Room moveDown() {
 		return movePlayer(posX, posY+1);
 	}
+	
+	public void drinkHealingPotion() {
+		if (this.getHealingPotions() > 0) {
+			HealingPotion p = this.healingPotions.get(0);
+			this.healingPotions.remove(0);
+			p.affectCharacter(this);
+		} else {
+			System.out.println("You don't have any healing potions to drink.");
+		}
+	}
+
+	public void drinkVisionPotion() {
+		if (this.getVisionPotions() > 0) {
+			VisionPotion p = this.visionPotions.get(0);
+			this.visionPotions.remove(0);
+			p.affectCharacter(this);
+		} else {
+			System.out.println("You don't have any vision potions to drink.");
+		}
+	}
+
 
 	public int getPosX() {
 		return posX;
@@ -87,19 +109,11 @@ public abstract class Hero extends DungeonCharacter
 	}
 
 	public int getVisionPotions() {
-		return visionPotions;
-	}
-
-	public void setVisionPotions(int visionPotions) {
-		this.visionPotions = visionPotions;
+		return visionPotions.size();
 	}
 
 	public int getHealingPotions() {
-		return healingPotions;
-	}
-
-	public void setHealingPotions(int healingPotions) {
-		this.healingPotions = healingPotions;
+		return healingPotions.size();
 	}
 
 	public double getChanceToBlock() {
@@ -127,6 +141,8 @@ public abstract class Hero extends DungeonCharacter
   {
 	super(name, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax);
 	this.chanceToBlock = chanceToBlock;
+	healingPotions = new ArrayList<HealingPotion>();
+	visionPotions = new ArrayList<VisionPotion>();
 	readName();
   }
 

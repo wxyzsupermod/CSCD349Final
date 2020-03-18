@@ -35,6 +35,8 @@ public class DungeonAdventure
 		dungeon = new Dungeon(20, 10);
 		currentRoom = dungeon.getEntrance();
 		
+		printDungeon();
+		
 		do
 		{
 			int option = displayMenu();
@@ -42,14 +44,13 @@ public class DungeonAdventure
 				theHero = chooseHero(option);
 				char decision;
 				while (theHero.getHitPoints() != 0) {
-					System.out.println("You have " + theHero.getHealingPotions() + " healing potions.");
-					System.out.println("You have " + theHero.getVisionPotions() + " vision potions.");
 					System.out.println("Your current location is " + theHero.getPosY() + ", " + theHero.getPosX());
 					printCurrentRoom();
 					System.out.println("Use a potion or move? (p or m)");
 					decision = Keyboard.next().charAt(0);
 					if(decision == 'p') {
 						//TODO: Use potion, determine if potion is healing or vision
+						takePotion();
 					} else if (decision == 'm') {
 						System.out.println("Move left, right, up or down?(l,r,u,d)");
 						decision = Keyboard.next().charAt(0);
@@ -68,7 +69,7 @@ public class DungeonAdventure
 						} else {
 							theMonster = currentRoom.getMonster();
 							if (theMonster != null) {
-								battle(theHero, theMonster);
+								battle();
 							}
 						}
 					}
@@ -103,28 +104,33 @@ public class DungeonAdventure
 	public static Hero chooseHero(int choice)
 	{
 		HeroFactory factory = new HeroFactory();
+		Hero hero;
 
 		if(choice == 1) {
-			return factory.createHero(1);
+			hero = factory.createHero(1);
 		}
 		
 		else if(choice == 2) {
-			return factory.createHero(2);
+			hero = factory.createHero(2);
 		}
 		
 		else if(choice == 3) {
-			return factory.createHero(3);
+			hero = factory.createHero(3);
 		}
 		else if(choice == 4){
-			return factory.createHero(4);
+			hero = factory.createHero(4);
 		}
 		else if( choice == 5) {
-			return factory.createHero(5);
+			hero = factory.createHero(5);
 		}
 		else {
-			return factory.createHero(6);
+			hero = factory.createHero(6);
 		}
-
+		
+		hero.setPosX(dungeon.getEntrance().x);
+		hero.setPosY(dungeon.getEntrance().y);
+		
+		return hero;
 	}//end chooseHero method
 	
 	
@@ -161,38 +167,46 @@ public class DungeonAdventure
 		//return theHero.isAlive();
 	}//end playAgain method
 
+	
+	public static void takePotion() {
+		System.out.println("You have " + theHero.getHealingPotions() + " healing potions.");
+		System.out.println("You have " + theHero.getVisionPotions() + " vision potions.");
+		System.out.println("Type v to drink a vision potion, or type h to drink a healing potion.");
+		char potionType = Keyboard.next().charAt(0);
+		if (potionType == 'h') {
+			theHero.drinkHealingPotion();
+		} else {
+			theHero.drinkVisionPotion();
+		}
+	}
 
-	public static void battle(Hero theHero, Monster theMonster)
+	public static void battle()
 	{
 		char pause = 'p';
 		System.out.println(theHero.getName() + " encounters " +
 							theMonster.getName() + "!");
 		System.out.println("---------------------------------------------");
 
-		//do battle
 		while (theHero.isAlive() && theMonster.isAlive() && pause != 'q')
 		{
-		    //hero goes first
 			theHero.battleChoices(theMonster);
 
-			//monster's turn (provided it's still alive!)
 			if (theMonster.isAlive())
 			    theMonster.attack(theHero);
 
-			//let the player bail out if desired
 			System.out.print("\n-->q to quit, anything else to continue: ");
 			pause = Keyboard.next().charAt(0);
 
-		}//end battle loop
+		}
 
 		if (!theMonster.isAlive())
 		    System.out.println(theHero.getName() + " was victorious!");
 		else if (!theHero.isAlive())
 			System.out.println(theHero.getName() + " was defeated :-(");
-		else//both are alive so user quit the game
+		else
 			System.out.println("Quitters never win ;-)");
 
-	}//end battle method
+	}
 	
 	public static void printDungeon() {
 		printRooms(0, 0, dungeon.roomsWidth, dungeon.roomsHeight);
