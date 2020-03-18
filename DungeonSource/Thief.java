@@ -34,7 +34,7 @@ public class Thief extends Hero
 	}//end surpriseAttack method
 
 
-    public void battleChoices(DungeonCharacter opponent)
+    public void getTurns(DungeonCharacter opponent)
 	{
 		super.getTurns(opponent);
 		int choice;

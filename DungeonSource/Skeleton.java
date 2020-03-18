@@ -1,5 +1,5 @@
 
-public class Skeleton extends Monster implements Attack
+public class Skeleton extends Monster
 {
 
     public Skeleton()

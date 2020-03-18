@@ -171,8 +171,8 @@ public class DungeonAdventure
 		    System.out.println(theHero.getName() + " was victorious!");
 		else if (!theHero.isAlive())
 			System.out.println(theHero.getName() + " was defeated >:D");
-		else
-			System.out.println("Quitters never win :O");
+		//else
+		//	System.out.println("Quitters never win :O");
 
 	}
 	

@@ -39,7 +39,7 @@ public class Sorceress extends Hero
 	}//end override of attack method
 
 //-----------------------------------------------------------------
-    public void battleChoices(DungeonCharacter opponent)
+    public void getTurns(DungeonCharacter opponent)
 	{
 		super.getTurns(opponent);
 		int choice;

@@ -1,5 +1,5 @@
 
-public class Gremlin extends Monster implements Attack
+public class Gremlin extends Monster
 {
 
     public Gremlin()

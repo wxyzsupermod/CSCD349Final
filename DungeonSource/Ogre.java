@@ -1,5 +1,5 @@
 
-public class Ogre extends Monster implements Attack
+public class Ogre extends Monster
 {
 
     public Ogre()

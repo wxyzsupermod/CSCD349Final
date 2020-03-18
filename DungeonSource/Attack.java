@@ -1,5 +1,5 @@
 
 public interface Attack {
-	public void attack(DungeonCharacter opponant);
+	public void attack(DungeonCharacter attacker, DungeonCharacter opponent);
 
 }
