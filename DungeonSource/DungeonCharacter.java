@@ -102,7 +102,7 @@ public String getName() {
 		}//end else if
 
 		if (this.hitPoints == 0)
-			System.out.println(name + " has been killed :-(");
+			System.out.println(name + " has been killed >:)");
 
 
 	}//end method

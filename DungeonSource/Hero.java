@@ -13,7 +13,12 @@ public abstract class Hero extends DungeonCharacter
 	private ArrayList<HealingPotion> healingPotions;
 	
 	private void visitRoom(Room room) {
-		if(room.getHealingPotion() != null) {
+		if(room.getExit() && this.getPillars() == 4) {
+			// NIM!
+			DungeonAdventure.finish();
+		} else if(room.getMonster() != null) {
+			DungeonAdventure.battle(room.getMonster());
+		} else if(room.getHealingPotion() != null) {
 			System.out.println("NEW ITEM: You picked up a healing potion!");
 			this.healingPotions.add(room.getHealingPotion());
 			room.setHealingPotion(null);
@@ -176,7 +181,7 @@ public void subtractHitPoints(int hitPoints)
 	}//end method
 
 
-	public void battleChoices(DungeonCharacter opponent)
+	public void getTurns(DungeonCharacter opponent)
 	{
 	    numTurns = this.getAttackSpeed()/opponent.getAttackSpeed();
 

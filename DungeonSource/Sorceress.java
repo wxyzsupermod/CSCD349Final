@@ -41,7 +41,7 @@ public class Sorceress extends Hero
 //-----------------------------------------------------------------
     public void battleChoices(DungeonCharacter opponent)
 	{
-		super.battleChoices(opponent);
+		super.getTurns(opponent);
 		int choice;
 
 		do

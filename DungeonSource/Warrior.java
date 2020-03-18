@@ -44,7 +44,7 @@ public class Warrior extends Hero
 	{
 		int choice;
 
-		super.battleChoices(opponent);
+		super.getTurns(opponent);
 
 		do
 		{
