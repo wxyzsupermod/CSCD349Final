@@ -7,6 +7,7 @@ public class VisionPotion extends Potion{
 	public void affectCharacter(DungeonCharacter c) {
 		Hero hero = (Hero) c;
 		if (hero != null) {
+			System.out.println("You drank the vision potion, and now you can see the rooms surrounding you.");
 			printVisionPotion(hero.getPosX(), hero.getPosY());
 		}
 	}
