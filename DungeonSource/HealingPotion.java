@@ -1,10 +1,12 @@
-import java.util.Random;
-
 public class HealingPotion extends Potion {
 	private int healPoints = 0;
 	
-	public HealingPotion() {
-		healPoints = new Random().nextInt(11) + 5;
+	public HealingPotion(int healingPoints) {
+		super("Healing Potion");
+		if (healingPoints <= 0) {
+			throw new IllegalArgumentException("healingPoints is zero or negative");
+		}
+		healPoints = healingPoints;
 	}
 	
 	@Override

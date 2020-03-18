@@ -1,8 +1,7 @@
-
 public class MightySword implements Attack {
 	@Override
 	public void attack(DungeonCharacter attacker, DungeonCharacter opponent) {
 		System.out.println(attacker.getName() + " swings a mighty sword at " + opponent.getName());
-		opponent.subtractHitPoints(attacker.getRandomAttackDamage());
+		opponent.subtractHitPoints(20);
 	}
 }

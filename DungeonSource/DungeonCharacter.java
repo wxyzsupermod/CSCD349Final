@@ -1,8 +1,4 @@
-
-public abstract class DungeonCharacter extends DungeonEntity
-{
-
-	private String name;
+public abstract class DungeonCharacter extends DungeonEntity {
 	private int hitPoints;
 	private int attackSpeed;
 	private double chanceToHit;
@@ -10,41 +6,33 @@ public abstract class DungeonCharacter extends DungeonEntity
 	private Attack attackStrategy;
 
 	public DungeonCharacter(String name, int hitPoints, int attackSpeed,
-				     double chanceToHit, int damageMin, int damageMax, Attack attackStrategy)
+				     double chanceToHit, int damageMin, int damageMax)
 	{
-
-		this.name = name;
+		super (name);
 		this.hitPoints = hitPoints;
 		this.attackSpeed = attackSpeed;
 		this.chanceToHit = chanceToHit;
 		this.damageMin = damageMin;
 		this.damageMax = damageMax;
-		this.attackStrategy = attackStrategy;
 
-	}//end constructor
+	}
 
-//-----------------------------------------------------------------
-	
-
-	public void addHitPoints(int hitPoints)
-	{
-		if (hitPoints <=0)
-			System.out.println("Hitpoint amount must be positive.");
-		else
-		{
+	public void addHitPoints(int hitPoints) {
+		if (hitPoints < 0) {
+			throw new IllegalArgumentException("hitPoints is negative");
+		} else {
 			this.hitPoints += hitPoints;
-			//System.out.println("Remaining Hit Points: " + hitPoints);
-
 		}
-	}//end addHitPoints method
-
-public String getName() {
-		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAttackStrategy(Attack attackStrategy) {
+		if (attackStrategy != null) {
+			this.attackStrategy = attackStrategy;
+		} else {
+			throw new IllegalArgumentException("Cannot set attack strategy to null");
+		}
 	}
+	
 
 	public int getHitPoints() {
 		return hitPoints;
@@ -85,43 +73,33 @@ public String getName() {
 	public void setDamageMax(int damageMax) {
 		this.damageMax = damageMax;
 	}
-
 	
-	public void subtractHitPoints(int hitPoints)
-	{
-		if (hitPoints <0)
-			System.out.println("Hitpoint amount must be positive.");
-		else if (hitPoints >0)
-		{
+	public void subtractHitPoints(int hitPoints) {
+		if (hitPoints < 0) {
+			throw new IllegalArgumentException("hitPoints is negative");
+		} else if (hitPoints >0) {
 			this.hitPoints -= hitPoints;
-			if (this.hitPoints < 0)
+			if (this.hitPoints < 0) {
 				this.hitPoints = 0;
-			System.out.println(getName() + " hit " +
-								" for <" + hitPoints + "> points damage.");
-			System.out.println(getName() + " now has " +
-								getHitPoints() + " hit points remaining.");
-			System.out.println();
-		}//end else if
-
+			}
+			System.out.println(getName() + " was hit for " + hitPoints + " points of damage, having " + getHitPoints() + " hit points remaining.");
+		}
 		if (this.hitPoints == 0)
-			System.out.println(name + " has been killed >:)");
+			System.out.println(getName() + " has been defeated!");
+	}
 
+    public boolean isAlive() {
+    	return hitPoints > 0;
+	}
 
-	}//end method
-
-    public boolean isAlive()
-	{
-	  return (hitPoints > 0);
-	}//end isAlive method
-
-    
     public int getRandomAttackDamage() {
     	return (int)(Math.random() * (damageMax - damageMin + 1)) + damageMin;
     }
-   
-	public void attack(DungeonCharacter opponent)
-	{
-		int damage;
+
+    public void attack(DungeonCharacter opponent) {
+		if (attackStrategy == null) {
+			throw new IllegalStateException("This character cannot attack because it doesn't have an attackStrategy. Set it with DungeonCharacter.setAttackStrategy()");
+		}
 		if (Math.random() <= chanceToHit) {
 			attackStrategy.attack(this, opponent);
 		} else {

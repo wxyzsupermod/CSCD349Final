@@ -21,7 +21,16 @@ public class PillarOfOOFactory {
 		if (totalFactoriesCreated >= 4) {
 			throw new IllegalStateException ("Cannot create more than 4 PillarOfOO objects");
 		}
-		PillarOfOO p = new PillarOfOO (totalFactoriesCreated);
+		PillarOfOO p;
+		if (totalFactoriesCreated == 0) {
+			p = new PillarOfOO("Abstraction");
+		} else if (totalFactoriesCreated == 1) {
+			p = new PillarOfOO("Encapsulation");
+		} else if (totalFactoriesCreated == 2) {
+			p = new PillarOfOO("Inheritance");
+		} else {
+			p = new PillarOfOO("Polymorphism");
+		}
 		totalFactoriesCreated++;
 		return p;
 	}

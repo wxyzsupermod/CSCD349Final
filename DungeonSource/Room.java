@@ -28,20 +28,30 @@ public class Room {
 		}
 		Random rand = new Random();
 		if(rand.nextDouble() < 0.1d) {
-			this.healingPotion = new HealingPotion();
+			this.healingPotion = new HealingPotion(rand.nextInt(11) + 5);
+			setEntityPosition(this.healingPotion);
 		}
 		if(rand.nextDouble() < 0.1d) {
-			this.visionPotion = new VisionPotion();
+			this.visionPotion = new VisionPotion(1);
+			setEntityPosition(this.visionPotion);
 		}
 		if(rand.nextDouble() < 0.1d) {
-			this.pit = new Pit();
+			this.pit = new Pit(rand.nextInt(20) + 1);
+			setEntityPosition(this.pit);
 		}
-		if(rand.nextDouble() < 0.1d){
-			MonsterFactory factory = new MonsterFactory();
-			this.monster = factory.createMonster(rand.nextInt(4));
+		if (!hasAnItem()) {
+			if(rand.nextDouble() < 0.25d){
+				//TODO: Make sure that rand.nextInt() always gets the correct integer so that all monsters can be created
+				this.monster = new MonsterFactory().createMonster(rand.nextInt(3));
+				setEntityPosition(this.monster);
+			}
 		}
 	}
 	
+	private void setEntityPosition(DungeonEntity entity) {
+		entity.setPosX(x);
+		entity.setPosY(y);
+	}
 	
 	public void printTopRow() {
 		if (y == 0) {
@@ -67,6 +77,9 @@ public class Room {
 		return "* " + (y == 0 ? "*" : "-") + " *\n" + (x == 0 ? "*" : "|") + " " + getContainingObject() + " " + (x == DungeonAdventure.getDungeon().roomsWidth - 1 ? "*" : "|") + "\n* " + (y == DungeonAdventure.getDungeon().roomsHeight - 1 ? "*" : "-") + " *";
 	}
 	
+	public boolean hasAnItem() {
+		return healingPotion != null || visionPotion != null || pit != null;
+	}
 	
 	public String getContainingObject() {
 		if(this.isEntrance) {

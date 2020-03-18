@@ -1,6 +1,16 @@
 public class VisionPotion extends Potion{
+	private int effectivity;
+	
+	public VisionPotion(int effectivity) {
+		super("Vision Potion");
+		if (effectivity <= 0) {
+			throw new IllegalArgumentException("effectivity is zero or negative");
+		}
+		this.effectivity = effectivity;
+	}
+	
 	public void printVisionPotion(int centerX, int centerY) {
-		DungeonAdventure.printRooms(centerX-1, centerY-1, centerX+1, centerY+1);
+		DungeonAdventure.printRooms(centerX-effectivity, centerY-effectivity, centerX+effectivity, centerY+effectivity);
 	}
 	
 	@Override
