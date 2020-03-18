@@ -28,7 +28,7 @@ public abstract class Hero extends DungeonCharacter
 		} else if(room.getMonster() == null) {
 			if(room.getPit() != null) {
 				System.out.println(this.getName() + " fell down a pit!");
-				this.subtractHitPoints(5);
+				super.subtractHitPoints(5); // call from super because we don't want to block damage from falling down a pit
 			}
 		}
 	}

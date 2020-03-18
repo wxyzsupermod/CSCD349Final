@@ -37,6 +37,22 @@ public class Dungeon
 		entrance.setEntrance(true);
 		exit = rooms[(entranceY+rand.nextInt(roomsHeight-1)+1)%roomsHeight][(entranceX+rand.nextInt(roomsWidth-1)+1)%roomsWidth];
 		exit.setExit(true);
+		for (int n = 0; n < 4; n ++)
+			nextOpenRoom().setPillarOfOO(PillarOfOOFactory.getInstance().create());
+	}
+	
+	private Room nextOpenRoom() {
+		// Return a room that is not an entrance or exit
+		Random rand = new Random();
+		Room cur;
+		int limit = 1000; // If randomly selecting rooms doesn't work for the first 1000 attempts, stop and throw an exception.
+		do {
+			cur = rooms[rand.nextInt(roomsHeight)][rand.nextInt(roomsWidth)];
+			if (limit -- <= 0) {
+				throw new IllegalStateException("Cannot find an empty room");
+			}
+		} while (cur.getEntrance() || cur.getExit());
+		return cur;
 	}
 	
 	public boolean locationIsValid(int i, int j) {

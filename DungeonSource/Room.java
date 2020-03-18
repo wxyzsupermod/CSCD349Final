@@ -128,6 +128,7 @@ public class Room {
 
 	public void setPillarOfOO(PillarOfOO pillar) {
 		this.pillar = pillar;
+		clearItems();
 	}
 
 	public VisionPotion getVisionPotion() {
@@ -143,10 +144,7 @@ public class Room {
 
 	public void setEntrance(boolean e) {
 		this.isEntrance = e;
-		this.healingPotion = null;
-		this.visionPotion = null;
-		this.pit = null;
-		this.monster = null;
+		clearItems();
 	}
 
 	public boolean getExit() {
@@ -155,10 +153,7 @@ public class Room {
 
 	public void setExit(boolean e) {
 		this.isExit = e;
-		this.healingPotion = null;
-		this.visionPotion = null;
-		this.pit = null;
-		this.monster = null;
+		clearItems();
 	}
 	
 	public Pit getPit() {
@@ -167,6 +162,13 @@ public class Room {
 
 	public void setPit(Pit pit) {
 		this.pit = pit;
+	}
+	
+	public void clearItems() {
+		this.healingPotion = null;
+		this.visionPotion = null;
+		this.pit = null;
+		this.monster = null;
 	}
 
 }

@@ -32,7 +32,8 @@ public class DungeonAdventure
 	
 	public static void main(String[] args)
 	{
-		dungeon = new Dungeon(20, 10);
+		new PillarOfOOFactory();
+		dungeon = new Dungeon(5, 3);
 		currentRoom = dungeon.getEntrance();
 		
 		printDungeon();
@@ -49,7 +50,6 @@ public class DungeonAdventure
 					System.out.println("Use a potion or move? (p or m)");
 					decision = Keyboard.next().charAt(0);
 					if(decision == 'p') {
-						//TODO: Use potion, determine if potion is healing or vision
 						takePotion();
 					} else if (decision == 'm') {
 						System.out.println("Move left, right, up or down?(l,r,u,d)");
@@ -159,20 +159,20 @@ public class DungeonAdventure
 
 	public static void battle()
 	{
-		char pause = 'p';
+		//char pause = 'p';
 		System.out.println(theHero.getName() + " encounters " +
 							theMonster.getName() + "!");
 		System.out.println("---------------------------------------------");
 
-		while (theHero.isAlive() && theMonster.isAlive() && pause != 'q')
+		while (theHero.isAlive() && theMonster.isAlive() /*&& pause != 'q'*/)
 		{
 			theHero.battleChoices(theMonster);
 
 			if (theMonster.isAlive())
 			    theMonster.attack(theHero);
 
-			System.out.print("\n-->q to quit, anything else to continue: ");
-			pause = Keyboard.next().charAt(0);
+			//System.out.print("\n-->q to quit, anything else to continue: ");
+			//pause = Keyboard.next().charAt(0);
 
 		}
 
