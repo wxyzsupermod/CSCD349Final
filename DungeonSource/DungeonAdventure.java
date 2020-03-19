@@ -49,9 +49,10 @@
  * 
  *  
  */
+
 import java.util.Scanner;
-public class DungeonAdventure
-{
+
+public class DungeonAdventure {
 	private static Scanner Keyboard = new Scanner(System.in);
     private static Dungeon dungeon;
     private static Hero theHero;
@@ -59,29 +60,29 @@ public class DungeonAdventure
     private static boolean finished;
 	private static Room currentRoom;
 	
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
+		new FlyweightFactory();
 		new PillarOfOOFactory();
 		finished = false;
-		dungeon = new Dungeon(5, 3);
+		dungeon = new Dungeon(5, 5);
 		currentRoom = dungeon.getEntrance();
 
 		printDungeon();
 		
-		do
-		{
+		do {
 			int option = displayMenu();
 			if(option != 7) {
-				theHero = chooseHero(option);
+				chooseHero(option);
+				readHeroName();
 				char decision;
 				while (theHero.isAlive() && !finished) {
 					printCurrentRoom();
-					System.out.println("Use a potion or move? (p or m)");
+					System.out.println("Use a potion or move? (p/m)");
 					decision = Keyboard.next().charAt(0);
 					if(decision == 'p') {
 						takePotion();
 					} else if (decision == 'm') {
-						System.out.println("Move left, right, up or down?(l,r,u,d)");
+						System.out.println("Move left, right, up or down? (l/r/u/d)");
 						decision = Keyboard.next().charAt(0);
 						if (decision == 'l') {
 							currentRoom = theHero.moveLeft();
@@ -101,68 +102,44 @@ public class DungeonAdventure
 		
 		System.out.println("This is where we print the whole dungeon at the end");
 		printDungeon();
+		
+		Keyboard.close();
 	}
 
-    private static int displayMenu()
-	{
-		
+    private static int displayMenu() {
 		int choice;
-		System.out.println("Please choose a hero from the following options: ");
-		System.out.println("1. Warrior ");
-		System.out.println("2. Sorceress ");
-		System.out.println("3. Thief ");
-		System.out.println("4. Elf Wizard ");
-		System.out.println("5. Gandalf  ");
-		System.out.println("6. Sorcerer ");
-
+		System.out.println("Please choose a hero from the following options:");
+		System.out.println("1. Warrior");
+		System.out.println("2. Sorceress");
+		System.out.println("3. Thief");
+		System.out.println("4. Elf Wizard");
+		System.out.println("5. Gandalf");
+		System.out.println("6. Sorcerer");
 		choice = Keyboard.nextInt();
 		return choice;
-	}	
-
+	}
     
-	public static Hero chooseHero(int choice)
-	{
-		HeroFactory factory = new HeroFactory();
-		Hero hero;
-
-		if(choice == 1) {
-			hero = factory.createHero(1);
-		}
-		
-		else if(choice == 2) {
-			hero = factory.createHero(2);
-		}
-		
-		else if(choice == 3) {
-			hero = factory.createHero(3);
-		}
-		else if(choice == 4){
-			hero = factory.createHero(4);
-		}
-		else if( choice == 5) {
-			hero = factory.createHero(5);
-		}
-		else {
-			hero = factory.createHero(6);
-		}
-		
-		hero.setPosX(dungeon.getEntrance().x);
-		hero.setPosY(dungeon.getEntrance().y);
-		
-		return hero;
+	public static void chooseHero(int choice) {
+		theHero = new HeroFactory().createHero(choice);
+		theHero.setPosX(dungeon.getEntrance().x);
+		theHero.setPosY(dungeon.getEntrance().y);
+		System.out.println("\nA " + theHero.getName() + " enters the dungeon.");
 	}
 	
-	public static boolean playAgain()
-	{
-		char again;
-
-		System.out.println("Play again (y/n)?");
-		again = Keyboard.next().charAt(0);
-
-		return (again == 'Y' || again == 'y');
+	public static void readHeroName() {
+		System.out.println("What is the name of the " + theHero.getName() + "?");
+		theHero.setName(new Scanner(System.in).nextLine()); // For some reason Keyboard.nextLine() doesn't work here, so a new scanner has to be created.
+		System.out.println(theHero.getName() + " seeks the Four Pillars of Object Oriented Programming.");
+		System.out.println("\nFind the pillars and bring them to the exit to save your kingdom from terrible code.");
+		System.out.println("Your adventure begins...\n\n");
+	}
+	
+	public static boolean playAgain() {
+		System.out.println("Play again? (y/n)");
+		char again = Keyboard.next().toLowerCase().charAt(0);
+		return again == 'y';
 	}
 
-	
 	public static void takePotion() {
 		System.out.println("You have " + theHero.getHealingPotions() + " healing potions.");
 		System.out.println("You have " + theHero.getVisionPotions() + " vision potions.");
@@ -175,17 +152,15 @@ public class DungeonAdventure
 		}
 	}
 
-	public static void battle(Monster monster)
-	{
+	public static void battle(Monster monster) {
 		theMonster = monster;
 		//char pause = 'p';
-		System.out.println(theHero.getName() + " encounters " +
-							theMonster.getName() + "!");
-		System.out.println("---------------------------------------------");
+		System.out.println(theHero.getName() + " encounters " + theMonster.getName() + "!");
+		System.out.println("------------- ENTER BATTLE WITH " + theMonster.getName().toUpperCase() + " -------------");
 
 		while (theHero.isAlive() && theMonster.isAlive() /*&& pause != 'q'*/)
 		{
-			theHero.getTurns(theMonster);
+			theHero.battle(theMonster, Keyboard);
 
 			if (theMonster.isAlive())
 			    theMonster.attack(theHero);
@@ -198,9 +173,11 @@ public class DungeonAdventure
 		if (!theMonster.isAlive())
 		    System.out.println(theHero.getName() + " was victorious!");
 		else if (!theHero.isAlive())
-			System.out.println(theHero.getName() + " was defeated >:D");
+			System.out.println(theHero.getName() + " was defeated!");
 		//else
 		//	System.out.println("Quitters never win :O");
+
+		System.out.println("------------- EXIT BATTLE -------------");
 
 	}
 	
@@ -250,7 +227,6 @@ public class DungeonAdventure
 	}
 
 	public static void printCurrentRoom() {
-		System.out.println("Your current location is " + theHero.getPosY() + ", " + theHero.getPosX());
 		System.out.println(currentRoom);
 	}
 	
@@ -262,6 +238,5 @@ public class DungeonAdventure
 		System.out.println("You WIN!");
 		finished = true;
 	}
-	
 	
 }
