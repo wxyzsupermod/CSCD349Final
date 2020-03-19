@@ -7,6 +7,7 @@ public class Thief extends Hero
     public Thief()
 	{
 		super("Thief", 75, 6, .8, 20, 40, .5);
+		//need to add Attack to ctr
 
 
 
@@ -34,9 +35,9 @@ public class Thief extends Hero
 	}//end surpriseAttack method
 
 
-    public void battleChoices(DungeonCharacter opponent)
+    public void getTurns(DungeonCharacter opponent)
 	{
-		super.battleChoices(opponent);
+		super.getTurns(opponent);
 		int choice;
 
 

@@ -1,9 +1,10 @@
 
-public class Minotaur extends Monster implements Attack {
+public class Minotaur extends Monster {
 
 	    public Minotaur()
 		{
 			super("Max the Minotaur", 130, 4, .5, .2, 25, 45, 40, 55);
+			//need to add attack to the ctr
 		}
 	    @Override
 		public void attack(DungeonCharacter opponent)

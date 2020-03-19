@@ -10,6 +10,7 @@ public class Sorceress extends Hero
     public Sorceress()
 	{
 		super("Sorceress", 75, 5, .7, 25, 50, .3);
+		//missing Attack
 
 
     }//end constructor
@@ -39,9 +40,9 @@ public class Sorceress extends Hero
 	}//end override of attack method
 
 //-----------------------------------------------------------------
-    public void battleChoices(DungeonCharacter opponent)
+    public void getTurns(DungeonCharacter opponent)
 	{
-		super.battleChoices(opponent);
+		super.getTurns(opponent);
 		int choice;
 
 		do

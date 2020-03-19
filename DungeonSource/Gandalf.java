@@ -6,6 +6,7 @@ public class Gandalf extends Hero {
 
 	public Gandalf() {
 		super("Gandalf the Great", 130, 5, .7, 45, 70, .5);
+		//needs and attack in the ctr
 	}
 	
 	public void iceSpell(DungeonCharacter opponent)
@@ -35,11 +36,11 @@ public class Gandalf extends Hero {
 
 
 
-    public void battleChoices(DungeonCharacter opponent)
+    public void getTurns(DungeonCharacter opponent)
 	{
 		int choice;
 
-		super.battleChoices(opponent);
+		super.getTurns(opponent);
 
 		do
 		{

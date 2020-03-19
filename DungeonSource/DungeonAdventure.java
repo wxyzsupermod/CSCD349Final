@@ -1,91 +1,109 @@
-/*Melody Kinyon
- * Corbin Smith
- * Yousef Baghlar
- * Jordan Fischer
- * GamePlay: The player is asked to name their hero
- * The player is placed at the entrance of the dungeon
- * then they get to move right or down
- * based on what is in the room: pit- lose points move to another room
- * potion: increase potion number and see if they want to use it
- * then move again if there is a monster:
- * The user is first prompted to choose a hero, then user is
- * asked to name the character. After this the number of rounds is 
- * calculated, and the user gets to choose between an attack or increasing
- * his own hitPoints. Based on the choice the battle occurs for the 
- * number of rounds specified and then the user is asked to quit or 
- * continue, if they quit a message is printed, and they are prompted 
- * to play again. If they say n, then the entire dungeon is printed. 
+/*Melody Kinyon- DungeonAdventure.java, additional Heroes and Monsters,
+ * incorporated the menu system that Yousef created with my own Menu from
+ * the refactor portion to include the hidden menu option, initially 
+ * got the Hero to move in the dungeon; also in charge of creating 
+ * the instructions and detailing the team contributions.Worked closely with
+ * Jordan on the final push to make sure all the specifications were
+ * met exactly across the board.Captured the working output and the output 
+ * from the gitHub usage. All members used this successfully for the 
+ * most part, with a few hiccups and a learning curve for all. 
+ * 
+ * Corbin Smith- Hero.java, created the UML Diagram, initially created 
+ * the Vision Potion, initially created Healing Potion,very helpful in
+ * testing and debugging the final code to ensure that it worked to
+ * specifications. 
+ * 
+ * Yousef Baghlar-Room.java, created the J-Unit tests,
+ * created initial refactor template(monsters, heroes, monster 
+ * and hero factory attack interface), created the 
+ * initial printDungeon() method,DungeonEntity.java, PillarOfOO.java,
+ * pit.java, 
+ * 
+ * Jordan Fischer- DungeonAdventure.java(refined the gameplay and
+ * and helped get the Hero to move appropriately), dungeon.java, 
+ * printRooms(array)method, refined VisionPotion, refined the 
+ * printDungeon(),refined the movement of the Hero in the dungeon,
+ * refined the HealingPotion, Potion.java, RoomFactory.java, 
+ * pillarOfOOFactory.java, was hugely helpful in making sure all the
+ * code worked to exact specifications with Melody.
+ *  
+ * 
+ * 
+ * GamePlay: The player is asked to select a hero from
+ * a menu. 
  * The hidden menu option is lucky number 7, this displays the 
- * entire dungeon.
+ * entire dungeon. 
+ * The player then has to name their hero.
+ * The player is placed at the entrance of the dungeon.
+ * First decision is to move down or right.
+ * After moving, info is printed: Number of healing potions, number of
+ * vision potions, room number and then the room contents are printed.
+ * If there is a monster in the room: a battle ensues where
+ * the number of rounds is calculated, and the user chooses between
+ * an attack or increasing his own hitPoints. 
+ * After the battle occurs for the number of rounds specified, the  
+ * user decides to quit or keep battling. If they leave the battle,
+ * they are prompted to choose a move in the dungeon(left, right, up,
+ * or down). As the player moves along they encounter randomly placed
+ * pits, and potions, and monsters. The pillars of OO
+ * 
  *  
  */
-
 import java.util.Scanner;
-
 public class DungeonAdventure
 {
 	private static Scanner Keyboard = new Scanner(System.in);
     private static Dungeon dungeon;
     private static Hero theHero;
-    private static int curRow = 0;
-	private static int curColumn = 0;
+    private static Monster theMonster;
+    private static boolean finished;
+	private static Room currentRoom;
+	
 	public static void main(String[] args)
 	{
-    	Scanner kb = new Scanner(System.in);
-		Monster theMonster;
-		dungeon = new Dungeon(5, 5);
+		new PillarOfOOFactory();
+		finished = false;
+		dungeon = new Dungeon(5, 3);
+		currentRoom = dungeon.getEntrance();
+
+		printDungeon();
+		
 		do
-		{//begin do
-			int option = displayMenu(kb);
-			
+		{
+			int option = displayMenu();
 			if(option != 7) {
 				theHero = chooseHero(option);
-				theMonster = generateMonster();
-				
-				System.out.println("Would you like to move your player down or right? (d or r)");
-				char decision = kb.next().charAt(0);
-				Room currentRoom;
-				if(decision == 'd') {//begin if
-					currentRoom = theHero.movePlayer(curRow++, curColumn, dungeon);
-				} else {
-					currentRoom = theHero.movePlayer(curRow, curColumn++, dungeon);
-				}
-				theMonster = currentRoom.getMonster();
-				if(theMonster!=null) {
-					battle(theHero, theMonster);
-				}
-				//System.out.println("The current room is: " + theHero.getPosX() + " and " + theHero.getPosY());
-				while (theHero.getHitPoints() != 0) {
+				char decision;
+				while (theHero.isAlive() && !finished) {
+					printCurrentRoom();
 					System.out.println("Use a potion or move? (p or m)");
-					decision = kb.next().charAt(0);
+					decision = Keyboard.next().charAt(0);
 					if(decision == 'p') {
-						//TODO: Use potion, determine if potion is healing or vision
+						takePotion();
 					} else if (decision == 'm') {
 						System.out.println("Move left, right, up or down?(l,r,u,d)");
-						decision = kb.next().charAt(0);
+						decision = Keyboard.next().charAt(0);
 						if (decision == 'l') {
-							currentRoom = theHero.movePlayer(curRow, curColumn--, dungeon);
+							currentRoom = theHero.moveLeft();
 						} else if (decision == 'r') {
-							currentRoom = theHero.movePlayer(curRow, curColumn ++, dungeon);
+							currentRoom = theHero.moveRight();
 						} else if (decision == 'u') {
-							currentRoom = theHero.movePlayer(curRow--, curColumn, dungeon);
+							currentRoom = theHero.moveUp();
 						} else {
-							currentRoom = theHero.movePlayer(curRow++, curColumn, dungeon);
+							currentRoom = theHero.moveDown();
 						}
-						System.out.println("The current room is: " + theHero.getPosX() + " and " + theHero.getPosY());
 					}
-					
 				}
 			} else {
 				printDungeon();
 			}
-		} while (theHero != null && theHero.isAlive());
+		} while (theHero != null && theHero.isAlive() && !finished);
 		
 		System.out.println("This is where we print the whole dungeon at the end");
 		printDungeon();
 	}
 
-    private static int displayMenu(Scanner kb)
+    private static int displayMenu()
 	{
 		
 		int choice;
@@ -96,9 +114,8 @@ public class DungeonAdventure
 		System.out.println("4. Elf Wizard ");
 		System.out.println("5. Gandalf  ");
 		System.out.println("6. Sorcerer ");
-		
 
-		choice = kb.nextInt();
+		choice = Keyboard.nextInt();
 		return choice;
 	}	
 
@@ -106,60 +123,34 @@ public class DungeonAdventure
 	public static Hero chooseHero(int choice)
 	{
 		HeroFactory factory = new HeroFactory();
+		Hero hero;
 
 		if(choice == 1) {
-			return factory.createHero(1);
+			hero = factory.createHero(1);
 		}
 		
 		else if(choice == 2) {
-			return factory.createHero(2);
+			hero = factory.createHero(2);
 		}
 		
 		else if(choice == 3) {
-			return factory.createHero(3);
+			hero = factory.createHero(3);
 		}
 		else if(choice == 4){
-			return factory.createHero(4);
+			hero = factory.createHero(4);
 		}
 		else if( choice == 5) {
-			return factory.createHero(5);
+			hero = factory.createHero(5);
 		}
 		else {
-			return factory.createHero(6);
-		}
-
-	}//end chooseHero method
-	
-	
-	public static Monster generateMonster()
-	{
-		int choice;
-		MonsterFactory factory = new MonsterFactory();
-
-		choice = (int)(Math.random() * 6) + 1;
-		
-		if(choice == 1) {
-			return factory.createMonster(1);
+			hero = factory.createHero(6);
 		}
 		
-		else if(choice == 2) {
-			return factory.createMonster(2);
-		}
+		hero.setPosX(dungeon.getEntrance().x);
+		hero.setPosY(dungeon.getEntrance().y);
 		
-		else if(choice == 3){
-			return factory.createMonster(3);
-		}
-		else if( choice == 4) {
-			return factory.createMonster(4);
-		}
-		else if (choice == 5) {
-			return factory.createMonster(5);
-			
-		}else
-			return factory.createMonster(6);
-		
-	}//end generateMonster method
-
+		return hero;
+	}
 	
 	public static boolean playAgain()
 	{
@@ -169,62 +160,108 @@ public class DungeonAdventure
 		again = Keyboard.next().charAt(0);
 
 		return (again == 'Y' || again == 'y');
-		//return theHero.isAlive();
-	}//end playAgain method
+	}
 
+	
+	public static void takePotion() {
+		System.out.println("You have " + theHero.getHealingPotions() + " healing potions.");
+		System.out.println("You have " + theHero.getVisionPotions() + " vision potions.");
+		System.out.println("Type v to drink a vision potion, or type h to drink a healing potion.");
+		char potionType = Keyboard.next().charAt(0);
+		if (potionType == 'h') {
+			theHero.drinkHealingPotion();
+		} else {
+			theHero.drinkVisionPotion();
+		}
+	}
 
-	public static void battle(Hero theHero, Monster theMonster)
+	public static void battle(Monster monster)
 	{
-		char pause = 'p';
-		System.out.println(theHero.getName() + " battles " +
-							theMonster.getName());
+		theMonster = monster;
+		//char pause = 'p';
+		System.out.println(theHero.getName() + " encounters " +
+							theMonster.getName() + "!");
 		System.out.println("---------------------------------------------");
 
-		//do battle
-		while (theHero.isAlive() && theMonster.isAlive() && pause != 'q')
+		while (theHero.isAlive() && theMonster.isAlive() /*&& pause != 'q'*/)
 		{
-		    //hero goes first
-			theHero.battleChoices(theMonster);
+			theHero.getTurns(theMonster);
 
-			//monster's turn (provided it's still alive!)
 			if (theMonster.isAlive())
 			    theMonster.attack(theHero);
 
-			//let the player bail out if desired
-			System.out.print("\n-->q to quit, anything else to continue: ");
-			pause = Keyboard.next().charAt(0);
+			//System.out.print("\n-->q to quit, anything else to continue: ");
+			//pause = Keyboard.next().charAt(0);
 
-		}//end battle loop
+		}
 
 		if (!theMonster.isAlive())
 		    System.out.println(theHero.getName() + " was victorious!");
 		else if (!theHero.isAlive())
-			System.out.println(theHero.getName() + " was defeated :-(");
-		else//both are alive so user quit the game
-			System.out.println("Quitters never win ;-)");
+			System.out.println(theHero.getName() + " was defeated >:D");
+		//else
+		//	System.out.println("Quitters never win :O");
 
-	}//end battle method
-	
-	
+	}
 	
 	public static void printDungeon() {
-		Room[][] rooms = dungeon.getRooms();
-	      
-	      for(int i =0; i < rooms.length; i++){
-	         
-	         for(int j = 0; j < rooms[i].length; j++){         
-		            rooms[i][j].printTopRow();
-		         }
-	         System.out.println("*");
-	         for(int j = 0; j < rooms[i].length; j++){         
-		            rooms[i][j].printMiddleRow();
-		         }
-	         System.out.println("*");
-	         for(int j = 0; j < rooms[i].length; j++){         
-		            rooms[i][j].printBottomRow();
-		         }
-	      }
-	      System.out.println("*");
+		printRooms(0, 0, dungeon.roomsWidth, dungeon.roomsHeight);
+	}
+	
+	public static void printRooms(int startX, int startY, int endX, int endY) {
+		startX = Math.min(Math.max(startX, 0), dungeon.roomsWidth - 1);
+		startY = Math.min(Math.max(startY, 0), dungeon.roomsHeight - 1);
+		endX = Math.min(Math.max(endX, 0), dungeon.roomsWidth - 1);
+		endY = Math.min(Math.max(endY, 0), dungeon.roomsHeight - 1);
+		if (startX > endX) {
+			int t = startX;
+			startX = endX;
+			endX = t;
+		}
+		if (startY > endY) {
+			int t = startY;
+			startY = endY;
+			endY = t;
+		}
+		for(int i = startY; i <= endY; i++){
+			for(int j = startX; j <= endX; j++){
+				dungeon.getRoom(i, j).printTopRow();
+			}
+			System.out.println("*");
+			for(int j = startX; j <= endX; j++){
+				dungeon.getRoom(i, j).printMiddleRow();
+			}
+			if (endX == dungeon.roomsWidth - 1) {
+				System.out.println("*");
+			} else {
+				System.out.println("|");
+			}
+		}
+		if (endY == dungeon.roomsHeight - 1) {
+			for (int j = startX; j <= endX; j ++) {
+				System.out.print("* * ");
+			}
+		} else {
+			for (int j = startX; j <= endX; j ++) {
+				System.out.print("* - ");
+			}
+		}
+		System.out.println("*");
 	}
 
-}//end DungeonAdventure class
+	public static void printCurrentRoom() {
+		System.out.println("Your current location is " + theHero.getPosY() + ", " + theHero.getPosX());
+		System.out.println(currentRoom);
+	}
+	
+	public static Dungeon getDungeon() {
+		return dungeon;
+	}
+	
+	public static void finish() {
+		System.out.println("You WIN!");
+		finished = true;
+	}
+	
+	
+}

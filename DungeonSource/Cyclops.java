@@ -1,10 +1,10 @@
 
-public class Cyclops extends Monster implements Attack {
+public class Cyclops extends Monster {
 
 	    public Cyclops()
 		{
 			super("Cyclops the Impossible", 180, 1, .3, .2, 40, 40, 20, 70);
-
+			//need to add attack
 
 	    }//end constructor
 	    @Override

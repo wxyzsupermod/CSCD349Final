@@ -3,11 +3,11 @@ import java.util.Scanner;
 public class Warrior extends Hero
 {
 	private static Scanner Keyboard = new Scanner(System.in);
-
+	private static MightySword sword = new MightySword();
     public Warrior()
 	{
 
-		super("Warrior", 125, 4, .8, 35, 60, .2);
+		super("Warrior", 125, 4, .8, 35, 60, .2, sword);
 
 
     }//end constructor
@@ -30,21 +30,12 @@ public class Warrior extends Hero
 
 	}//end crushingBlow method
 
-	public void attack(DungeonCharacter opponent)
-	{
-		System.out.println(this.getName() + " swings a mighty sword at " +
-							opponent.getName() + ":");
-		super.attack(opponent);
-	}//end override of attack method
 
-
-
-
-    public void battleChoices(DungeonCharacter opponent)
+    public void getTurns(DungeonCharacter opponent)
 	{
 		int choice;
 
-		super.battleChoices(opponent);
+		super.getTurns(opponent);
 
 		do
 		{

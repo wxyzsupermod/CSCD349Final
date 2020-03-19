@@ -4,6 +4,7 @@ public class Sorcerer extends Hero{
 	private static Scanner Keyboard = new Scanner(System.in);
 	public Sorcerer() {
 		super("Sorcerer", 140, 8, .5, 55, 75, .6);
+		//need to add attack to ctr
 	}
 	
 	public void tornadoSpell(DungeonCharacter opponent)
@@ -30,41 +31,39 @@ public class Sorcerer extends Hero{
 		super.attack(opponent);
 	}//end override of attack method
 
-
-
-
-    public void battleChoices(DungeonCharacter opponent)
-	{
-		int choice;
-
-		super.battleChoices(opponent);
-
-		do
+	 public void getTurns(DungeonCharacter opponent)
 		{
-		    System.out.println("1. Attack Opponent");
-		    System.out.println("2. Tornado Spell on Opponent");
-		    System.out.print("Choose an option: ");
-		    choice = Keyboard.nextInt();
+			super.getTurns(opponent);
+			int choice;
 
-		    if(choice == 1) {
-		    	attack(opponent);
-		    }
-		    
-		    else if(choice == 2) {
-		    	tornadoSpell(opponent);
-		    }
-		    
-		    else {
-		    	System.out.println("invalid choice!");
-		    }
-		    
 
-			this.setNumTurns(this.getNumTurns()-1);
-			if (this.getNumTurns() > 0)
-			    System.out.println("Number of turns remaining is: " + this.getNumTurns());
+			do
+			{
+			    System.out.println("1. Attack Opponent");
+			    System.out.println("2. Tornado Spell on Opponent");
+			    System.out.print("Choose an option: ");
+			    choice = Keyboard.nextInt();
+			    
+			    if(choice == 1) {
+			    	attack(opponent);
+			    }
+			    
+			    else if(choice == 2) {
+			    	tornadoSpell(opponent);
+			    }
+			    
+			    else {
+			    	System.out.println("invalid choice!");
+			    }
 
-		} while(this.getNumTurns() > 0);
+				this.setNumTurns(this.getNumTurns() - 1);
+				if (this.getNumTurns() > 0)
+				    System.out.println("Number of turns remaining is: " + this.getNumTurns());
 
-    }//end battleChoices method
-}
+			} while(this.getNumTurns() > 0);
 
+	    }
+	}
+
+
+   

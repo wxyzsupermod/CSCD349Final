@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public abstract class Hero extends DungeonCharacter
@@ -8,48 +9,86 @@ public abstract class Hero extends DungeonCharacter
 	private int posX;
 	private int posY;
 	private int pillars;
-	private int visionPotions;
-	private int healingPotions;
-
-	public Room movePlayer(int y, int x, Dungeon d) {
-		
-		if(d.locationIsValid(x, y)) {
-			posX = x;
-			posY = y;
-			d.getRoom(x, y);
-			if(d.getRoom(x, y).getHealingPotion() != null) {
-				this.healingPotions = this.healingPotions + 1;
-				d.getRoom(x, y).setHealingPotion(null);
-				return d.getRoom(x, y);
-			}
-			if(d.getRoom(x, y).getPillarOfOO() != null) {
-				this.pillars = this.pillars + 1;
-				d.getRoom(x, y).setPillarOfOO(null);
-				return d.getRoom(x, y);
-			}
-			if(d.getRoom(x, y).getVisionPotion() != null) {
-				this.visionPotions = this.visionPotions + 1;
-				d.getRoom(x, y).setVisionPotion(null);
-				return d.getRoom(x, y);
-			}
-			if(d.getRoom(x, y).getMonster() != null) {
-				//Do Battle
-				return d.getRoom(x, y);
-			}
-			if(d.getRoom(x, y).getPit() != null) {
-				System.out.println(this.getName() + " Fell in a pit and took five damage");
-				this.subtractHitPoints(5);
-				return d.getRoom(x, y);
+	private ArrayList<VisionPotion> visionPotions;
+	private ArrayList<HealingPotion> healingPotions;
+	
+	private void visitRoom(Room room) {
+		if(room.getExit() && this.getPillars() == 4) {
+			// NIM!
+			DungeonAdventure.finish();
+		} else if(room.getMonster() != null) {
+			DungeonAdventure.battle(room.getMonster());
+		} else if(room.getHealingPotion() != null) {
+			System.out.println("NEW ITEM: You picked up a healing potion!");
+			this.healingPotions.add(room.getHealingPotion());
+			room.setHealingPotion(null);
+		} else if(room.getPillarOfOO() != null) {
+			System.out.println("NEW ITEM: You picked up the " + room.getPillarOfOO().toString() + " pillar!");
+			this.pillars = this.pillars + 1;
+			room.setPillarOfOO(null);
+		} else if(room.getVisionPotion() != null) {
+			System.out.println("NEW ITEM: You picked up a vision potion!");
+			this.visionPotions.add(room.getVisionPotion());
+			room.setVisionPotion(null);
+		} else if(room.getMonster() == null) {
+			if(room.getPit() != null) {
+				System.out.println(this.getName() + " fell down a pit!");
+				super.subtractHitPoints(5); // call from super because we don't want to block damage from falling down a pit
 			}
 		}
-		else {
-			System.out.println("Cannot Move in that direction");
-			
-		}
-		return d.getRoom(posX, posY);
-		
 	}
 	
+	private Room movePlayer(int x, int y) {
+		Dungeon d = DungeonAdventure.getDungeon();
+		if(d.locationIsValid(y, x)) {
+			posX = x;
+			posY = y;
+			Room room = d.getRoom(y, x);
+			visitRoom(room);
+			return room;
+		} else {
+			System.out.println("Cannot Move in that direction");
+		}
+		return null;
+	}
+	
+	public Room moveRight() {
+		return movePlayer(posX+1, posY);
+	}
+	
+	public Room moveLeft() {
+		return movePlayer(posX-1, posY);
+	}
+
+	public Room moveUp() {
+		return movePlayer(posX, posY-1);
+	}
+
+	public Room moveDown() {
+		return movePlayer(posX, posY+1);
+	}
+	
+	public void drinkHealingPotion() {
+		if (this.getHealingPotions() > 0) {
+			HealingPotion p = this.healingPotions.get(0);
+			this.healingPotions.remove(0);
+			p.affectCharacter(this);
+		} else {
+			System.out.println("You don't have any healing potions to drink.");
+		}
+	}
+
+	public void drinkVisionPotion() {
+		if (this.getVisionPotions() > 0) {
+			VisionPotion p = this.visionPotions.get(0);
+			this.visionPotions.remove(0);
+			p.affectCharacter(this);
+		} else {
+			System.out.println("You don't have any vision potions to drink.");
+		}
+	}
+
+
 	public int getPosX() {
 		return posX;
 	}
@@ -75,19 +114,11 @@ public abstract class Hero extends DungeonCharacter
 	}
 
 	public int getVisionPotions() {
-		return visionPotions;
-	}
-
-	public void setVisionPotions(int visionPotions) {
-		this.visionPotions = visionPotions;
+		return visionPotions.size();
 	}
 
 	public int getHealingPotions() {
-		return healingPotions;
-	}
-
-	public void setHealingPotions(int healingPotions) {
-		this.healingPotions = healingPotions;
+		return healingPotions.size();
 	}
 
 	public double getChanceToBlock() {
@@ -111,10 +142,12 @@ public abstract class Hero extends DungeonCharacter
 
   public Hero(String name, int hitPoints, int attackSpeed,
 				     double chanceToHit, int damageMin, int damageMax,
-					 double chanceToBlock)
+					 double chanceToBlock, Attack attackStrategy)
   {
-	super(name, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax);
+	super(name, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax, attackStrategy);
 	this.chanceToBlock = chanceToBlock;
+	healingPotions = new ArrayList<HealingPotion>();
+	visionPotions = new ArrayList<VisionPotion>();
 	readName();
   }
 
@@ -148,7 +181,7 @@ public void subtractHitPoints(int hitPoints)
 	}//end method
 
 
-	public void battleChoices(DungeonCharacter opponent)
+	public void getTurns(DungeonCharacter opponent)
 	{
 	    numTurns = this.getAttackSpeed()/opponent.getAttackSpeed();
 
@@ -158,5 +191,10 @@ public void subtractHitPoints(int hitPoints)
 		System.out.println("Number of turns this round is: " + numTurns);
 
 	}//end battleChoices
+	@Override
+	public String toString() {
+		return this.getName() + " has " + this.getHitPoints() + " Hit Points " + this.getHealingPotions() + " Healing Potions "
+				+ this.getVisionPotions() + " Vision Potions " + this.getPillars() + " Pillars Of OO " ;
+	}
 
 }//end Hero class

@@ -1,23 +1,14 @@
-import java.util.Random;
-public class PillarOfOO extends DungeonEntity{
+public class PillarOfOO extends DungeonEntity {
 	private String pillarOfOO;
 	
-	public PillarOfOO() {
-		int num = new Random().nextInt(4);
-		
-		if(num == 0) {
+	public PillarOfOO(int type) {
+		if(type == 0) {
 			this.setPillarOfOO("Abstraction");
-		}
-		
-		else if(num == 1) {
+		} else if(type == 1) {
 			this.setPillarOfOO("Inheritance");
-		}
-		
-		else if(num == 2) {
-			this.setPillarOfOO("Composition");
-		}
-		
-		else {
+		} else if(type == 2) {
+			this.setPillarOfOO("Polymorphism");
+		} else {
 			this.setPillarOfOO("Encapsulation");
 		}
 	}
@@ -28,5 +19,10 @@ public class PillarOfOO extends DungeonEntity{
 
 	public void setPillarOfOO(String pillarOfOO) {
 		this.pillarOfOO = pillarOfOO;
+	}
+	
+	@Override
+	public String toString() {
+		return pillarOfOO;
 	}
 }

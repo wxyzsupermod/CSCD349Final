@@ -1,11 +1,10 @@
 
-public class Ogre extends Monster implements Attack
-{
+public class Ogre extends Monster {
 
     public Ogre()
 	{
 		super("Oscar the Ogre", 200, 2, .6, .1, 30, 50, 30, 50);
-
+		//missing the Attack in ctr
 
     }//end constructor
     @Override

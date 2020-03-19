@@ -1,5 +1,5 @@
 
-public abstract class DungeonCharacter
+public abstract class DungeonCharacter extends DungeonEntity
 {
 
 	private String name;
@@ -7,9 +7,10 @@ public abstract class DungeonCharacter
 	private int attackSpeed;
 	private double chanceToHit;
 	private int damageMin, damageMax;
+	private Attack attackStrategy;
 
 	public DungeonCharacter(String name, int hitPoints, int attackSpeed,
-				     double chanceToHit, int damageMin, int damageMax)
+				     double chanceToHit, int damageMin, int damageMax, Attack attackStrategy)
 	{
 
 		this.name = name;
@@ -18,6 +19,7 @@ public abstract class DungeonCharacter
 		this.chanceToHit = chanceToHit;
 		this.damageMin = damageMin;
 		this.damageMax = damageMax;
+		this.attackStrategy = attackStrategy;
 
 	}//end constructor
 
@@ -102,7 +104,7 @@ public String getName() {
 		}//end else if
 
 		if (this.hitPoints == 0)
-			System.out.println(name + " has been killed :-(");
+			System.out.println(name + " has been killed >:)");
 
 
 	}//end method
@@ -112,36 +114,19 @@ public String getName() {
 	  return (hitPoints > 0);
 	}//end isAlive method
 
+    
+    public int getRandomAttackDamage() {
+    	return (int)(Math.random() * (damageMax - damageMin + 1)) + damageMin;
+    }
    
 	public void attack(DungeonCharacter opponent)
 	{
-		boolean canAttack;
 		int damage;
-
-		canAttack = Math.random() <= chanceToHit;
-
-		if (canAttack)
-		{
-			damage = (int)(Math.random() * (damageMax - damageMin + 1))
-						+ damageMin ;
-			opponent.subtractHitPoints(damage);
-
-
-
-			System.out.println();
-		}//end if can attack
-		else
-		{
-
-			System.out.println(getName() + "'s attack on " + opponent.getName() +
-								" failed!");
-			System.out.println();
-		}//end else
-
-	}//end attack method
-
-//-----------------------------------------------------------------
-
-
-
-}//end class Character
+		if (Math.random() <= chanceToHit) {
+			attackStrategy.attack(this, opponent);
+		} else {
+			System.out.println(getName() + " missed!");
+		}
+		System.out.println();
+	}
+}

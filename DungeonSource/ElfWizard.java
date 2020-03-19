@@ -5,6 +5,7 @@ public class ElfWizard extends Hero {
 	private static Scanner Keyboard = new Scanner(System.in);
 	public ElfWizard() {
 		super("ElfWizard", 150, 9, .4, 75, 55, .7);
+		//need attack in ctr
 	}
 	
 	public void dizzinessSpell(DungeonCharacter opponent)
@@ -34,11 +35,11 @@ public class ElfWizard extends Hero {
 
 
 
-    public void battleChoices(DungeonCharacter opponent)
+    public void getTurns(DungeonCharacter opponent)
 	{
 		int choice;
 
-		super.battleChoices(opponent);
+		super.getTurns(opponent);
 
 		do
 		{
