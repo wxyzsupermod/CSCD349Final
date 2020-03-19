@@ -24,6 +24,7 @@ public class FlyweightFactory {
 		attackFlyweights.put("Kris", new Kris());
 		attackFlyweights.put("Rusty Blade", new RustyBlade());
 		attackFlyweights.put("Slow Club", new SlowClub());
+		attackFlyweights.put("Hands", new SlowClub());
 	}
 	
 	public Attack getAttackFlyweight(String key) {

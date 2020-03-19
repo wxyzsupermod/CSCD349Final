@@ -41,8 +41,7 @@ public class Room {
 		}
 		if (!hasAnItem()) {
 			if(rand.nextDouble() < 0.25d){
-				//TODO: Make sure that rand.nextInt() always gets the correct integer so that all monsters can be created
-				this.monster = new MonsterFactory().createMonster(rand.nextInt(3));
+				this.monster = new MonsterFactory().createMonster(rand.nextInt(4));
 				setEntityPosition(this.monster);
 			}
 		}
